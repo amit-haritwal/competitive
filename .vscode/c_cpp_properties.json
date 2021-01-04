@@ -18,8 +18,10 @@
                 ],
                 "limitSymbolsToIncludedHeaders": true,
                 "databaseFilename": ""
-            }
+            },
+            "cStandard": "c17",
+            "cppStandard": "c++17"
         }
     ],
-    "version": 3
+    "version": 4
 }
