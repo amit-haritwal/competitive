@@ -81,81 +81,60 @@ ll power(ll x, ll y)
 }
 void sol()
 {
-  string str;
-  cin >> str;
-  ll type = 0, j = 0;
-  rep(i, 0, str.size())
+  ll n, k;
+  cin >> n >> k;
+  vector<vector<ll>> ans(n, vector<ll>(n, 0));
+  rep(i, 0, n)
   {
-    if (int(str[i]) < 58)
+    rep(j, 0, n)
     {
-      j++;
-    }
-    else if (j > 0)
-    {
-      type = 1;
-      break;
-    }
-  }
-  // cout << type << endl;
-  if (type != 0)
-  {
-    int pos, a = 0, b = 0;
-    for (int i = 0; i < str.size(); ++i)
-    {
-      if (str[i] == 'C')
+      if (k > 0)
       {
-        pos = i;
-        break;
-      }
-    }
-    for (int i = 1; i < pos; ++i)
-    {
-      a = a * 10 + (str[i] - '0');
-    }
-    for (int i = pos + 1; i < str.size(); ++i)
-    {
-      b = b * 10 + (str[i] - '0');
-    }
-    stack<char> s;
-    while (b > 0)
-    {
-      if (b % 26 == 0)
-      {
-        s.push('Z');
-        b -= 26;
+        ans[j][(j + i) % n] = 1;
       }
       else
-        s.push('A' - 1 + b % 26);
-      b /= 26;
-    }
-    while (!s.empty())
-    {
-      printf("%c", s.top());
-      s.pop();
-    }
-    printf("%d\n", a);
-  }
-  else
-  {
-    int pos;
-    for (int i = 0; i < str.size(); ++i)
-    {
-      if (isdigit(str[i]))
       {
-        pos = i;
         break;
       }
+      k--;
     }
-    int num = 0;
-    for (int i = 0; i < pos - 1; ++i)
+  }
+  ll max1 = 0, max2 = 0, min2 = 999999, min1 = 999999;
+  rep(i, 0, n)
+  {
+    ll temp = 0;
+    rep(j, 0, n)
     {
-      num = num * 26 + (str[i] - 'A' + 1) * 26;
+      if (ans[i][j])
+      {
+        temp++;
+      }
     }
-    num += str[pos - 1] - 'A';
-    printf("R");
-    for (int i = pos; i < str.size(); ++i)
-      printf("%c", str[i]);
-    printf("C%d\n", num + 1);
+    max1 = max(max1, temp);
+    min1 = min(min1, temp);
+  }
+
+  rep(i, 0, n)
+  {
+    ll temp = 0;
+    rep(j, 0, n)
+    {
+      if (ans[j][i])
+      {
+        temp++;
+      }
+    }
+    max2 = max(max2, temp);
+    min2 = min(min2, temp);
+  }
+  cout << (max1 - min1) * (max1 - min1) + (max2 - min2) * (max2 - min2) << endl;
+  for (auto i : ans)
+  {
+    for (auto j : i)
+    {
+      cout << j;
+    }
+    cout << endl;
   }
 }
 int main()

@@ -79,91 +79,73 @@ ll power(ll x, ll y)
   else
     return x * temp * temp;
 }
-void sol()
+vector<ll> primefactorisation(ll n)
 {
-  string str;
-  cin >> str;
-  ll type = 0, j = 0;
-  rep(i, 0, str.size())
+  vector<ll> ans;
+  ll t = 2;
+  while (n > 1)
   {
-    if (int(str[i]) < 58)
+    if (n % t == 0)
     {
-      j++;
+      ans.push_back(t);
+      n = n / t;
     }
-    else if (j > 0)
+    else
     {
-      type = 1;
-      break;
+      t++;
     }
   }
-  // cout << type << endl;
-  if (type != 0)
+  return ans;
+}
+
+ll lcm(ll a, ll b)
+{
+  return (a / gcd(a, b)) * b;
+}
+vector<pair<ll, ll>> dp(1000000, {-1, -1});
+pair<ll, ll> solve(vector<ll> v1, ll sum1, ll sum2, ll index)
+{
+  if (index == v1.size())
   {
-    int pos, a = 0, b = 0;
-    for (int i = 0; i < str.size(); ++i)
-    {
-      if (str[i] == 'C')
-      {
-        pos = i;
-        break;
-      }
-    }
-    for (int i = 1; i < pos; ++i)
-    {
-      a = a * 10 + (str[i] - '0');
-    }
-    for (int i = pos + 1; i < str.size(); ++i)
-    {
-      b = b * 10 + (str[i] - '0');
-    }
-    stack<char> s;
-    while (b > 0)
-    {
-      if (b % 26 == 0)
-      {
-        s.push('Z');
-        b -= 26;
-      }
-      else
-        s.push('A' - 1 + b % 26);
-      b /= 26;
-    }
-    while (!s.empty())
-    {
-      printf("%c", s.top());
-      s.pop();
-    }
-    printf("%d\n", a);
+    return {sum1, sum2};
+  }
+  pair<ll, ll> v3 = solve(v1, sum1 * v1[index], sum2, index + 1);
+  pair<ll, ll> v2 = solve(v1, sum1, sum2 * v1[index], index + 1);
+  if (max(v3.first, v3.second) > max(v2.first, v2.second))
+  {
+    dp[index] = v2;
+    return v2;
   }
   else
   {
-    int pos;
-    for (int i = 0; i < str.size(); ++i)
-    {
-      if (isdigit(str[i]))
-      {
-        pos = i;
-        break;
-      }
-    }
-    int num = 0;
-    for (int i = 0; i < pos - 1; ++i)
-    {
-      num = num * 26 + (str[i] - 'A' + 1) * 26;
-    }
-    num += str[pos - 1] - 'A';
-    printf("R");
-    for (int i = pos; i < str.size(); ++i)
-      printf("%c", str[i]);
-    printf("C%d\n", num + 1);
+    dp[index] = v3;
+    return v3;
   }
+}
+void sol()
+{
+  ll n;
+  cin >> n;
+
+  ll current1 = 999999999999;
+  ll ans1 = 1, ans2 = n;
+  rep(i, 1, sqrt(n))
+  {
+    if (n % i == 0 && lcm(i, n / i) == n && max(i, n / i) < current1)
+    {
+      current1 = max(i, n / i);
+      ans1 = i;
+      ans2 = n / i;
+    }
+  }
+  cout << ans1 << " " << ans2 << endl;
 }
 int main()
 {
   ios_base::sync_with_stdio(false);
   cin.tie(NULL);
   int a = 1;
-  cin >> a;
+  // cin >> a;
   while (a--)
   {
     sol();

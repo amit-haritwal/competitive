@@ -81,82 +81,26 @@ ll power(ll x, ll y)
 }
 void sol()
 {
-  string str;
-  cin >> str;
-  ll type = 0, j = 0;
-  rep(i, 0, str.size())
+  ll n;
+  cin >> n;
+  ll t = 0;
+  if (n == 1)
   {
-    if (int(str[i]) < 58)
-    {
-      j++;
-    }
-    else if (j > 0)
-    {
-      type = 1;
-      break;
-    }
+    cout << 0 << endl;
+    return;
   }
-  // cout << type << endl;
-  if (type != 0)
+  while (n > 0)
   {
-    int pos, a = 0, b = 0;
-    for (int i = 0; i < str.size(); ++i)
-    {
-      if (str[i] == 'C')
-      {
-        pos = i;
-        break;
-      }
-    }
-    for (int i = 1; i < pos; ++i)
-    {
-      a = a * 10 + (str[i] - '0');
-    }
-    for (int i = pos + 1; i < str.size(); ++i)
-    {
-      b = b * 10 + (str[i] - '0');
-    }
-    stack<char> s;
-    while (b > 0)
-    {
-      if (b % 26 == 0)
-      {
-        s.push('Z');
-        b -= 26;
-      }
-      else
-        s.push('A' - 1 + b % 26);
-      b /= 26;
-    }
-    while (!s.empty())
-    {
-      printf("%c", s.top());
-      s.pop();
-    }
-    printf("%d\n", a);
+    n = n / 2;
+    t++;
   }
-  else
+  ll ans = 0;
+  t--;
+  while (t--)
   {
-    int pos;
-    for (int i = 0; i < str.size(); ++i)
-    {
-      if (isdigit(str[i]))
-      {
-        pos = i;
-        break;
-      }
-    }
-    int num = 0;
-    for (int i = 0; i < pos - 1; ++i)
-    {
-      num = num * 26 + (str[i] - 'A' + 1) * 26;
-    }
-    num += str[pos - 1] - 'A';
-    printf("R");
-    for (int i = pos; i < str.size(); ++i)
-      printf("%c", str[i]);
-    printf("C%d\n", num + 1);
+    ans = ans + pow(2, t);
   }
+  cout << ans << endl;
 }
 int main()
 {

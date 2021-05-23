@@ -79,91 +79,46 @@ ll power(ll x, ll y)
   else
     return x * temp * temp;
 }
+int tab[1024][1024];
 void sol()
 {
-  string str;
-  cin >> str;
-  ll type = 0, j = 0;
-  rep(i, 0, str.size())
+  ll n;
+  cin >> n;
+  for (int i = 0; i < n; ++i)
   {
-    if (int(str[i]) < 58)
+    for (int j = 0; j < n; ++j)
     {
-      j++;
-    }
-    else if (j > 0)
-    {
-      type = 1;
-      break;
+      cin >> tab[i][j];
     }
   }
-  // cout << type << endl;
-  if (type != 0)
+
+  ll ab = tab[0][1], ac = tab[0][2], bc = tab[1][2];
+
+  ll a2 = ab * ac / bc;
+  ll a = sqrtl(a2 + 0.1);
+  while ((a + 1) * (a + 1) <= a2)
   {
-    int pos, a = 0, b = 0;
-    for (int i = 0; i < str.size(); ++i)
-    {
-      if (str[i] == 'C')
-      {
-        pos = i;
-        break;
-      }
-    }
-    for (int i = 1; i < pos; ++i)
-    {
-      a = a * 10 + (str[i] - '0');
-    }
-    for (int i = pos + 1; i < str.size(); ++i)
-    {
-      b = b * 10 + (str[i] - '0');
-    }
-    stack<char> s;
-    while (b > 0)
-    {
-      if (b % 26 == 0)
-      {
-        s.push('Z');
-        b -= 26;
-      }
-      else
-        s.push('A' - 1 + b % 26);
-      b /= 26;
-    }
-    while (!s.empty())
-    {
-      printf("%c", s.top());
-      s.pop();
-    }
-    printf("%d\n", a);
+    ++a;
   }
-  else
+  while (a * a > a2)
   {
-    int pos;
-    for (int i = 0; i < str.size(); ++i)
-    {
-      if (isdigit(str[i]))
-      {
-        pos = i;
-        break;
-      }
-    }
-    int num = 0;
-    for (int i = 0; i < pos - 1; ++i)
-    {
-      num = num * 26 + (str[i] - 'A' + 1) * 26;
-    }
-    num += str[pos - 1] - 'A';
-    printf("R");
-    for (int i = pos; i < str.size(); ++i)
-      printf("%c", str[i]);
-    printf("C%d\n", num + 1);
+    --a;
   }
+  assert(a * a == a2);
+
+  cout << a;
+  for (int i = 1; i < n; ++i)
+  {
+    cout << " " << tab[0][i] / a;
+  }
+  cout << "\n";
 }
 int main()
 {
   ios_base::sync_with_stdio(false);
   cin.tie(NULL);
   int a = 1;
-  cin >> a;
+  // cin >> a;
   while (a--)
   {
     sol();

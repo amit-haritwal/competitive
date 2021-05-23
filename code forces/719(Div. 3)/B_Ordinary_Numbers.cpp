@@ -79,84 +79,63 @@ ll power(ll x, ll y)
   else
     return x * temp * temp;
 }
+bool digit(ll n)
+{
+  ll ans = n % 10;
+  while (n > 0)
+  {
+    if (ans != n % 10)
+      return false;
+    n = n / 10;
+  }
+  return true;
+}
 void sol()
 {
-  string str;
-  cin >> str;
-  ll type = 0, j = 0;
-  rep(i, 0, str.size())
+  ll n;
+  cin >> n;
+  ll t = n;
+  ll ans = 0;
+  ll min1 = t % 10, flag = 0;
+  ll ans1 = 0;
+  // rep(i, 1, n + 1)
+  // {
+  //   if (digit(i))
+  //   {
+  //     ans1++;
+  //   }
+  // }
+  // cout << ans1 << " ";
+  while (t > 0)
   {
-    if (int(str[i]) < 58)
+    if (t % 10 != min1)
     {
-      j++;
+      flag = 1;
     }
-    else if (j > 0)
-    {
-      type = 1;
-      break;
-    }
+    t = t / 10;
+    ans += 9;
   }
-  // cout << type << endl;
-  if (type != 0)
+  ans -= 9;
+  // cout << ans << endl;
+  t = n;
+  while (t >= 10)
   {
-    int pos, a = 0, b = 0;
-    for (int i = 0; i < str.size(); ++i)
-    {
-      if (str[i] == 'C')
-      {
-        pos = i;
-        break;
-      }
-    }
-    for (int i = 1; i < pos; ++i)
-    {
-      a = a * 10 + (str[i] - '0');
-    }
-    for (int i = pos + 1; i < str.size(); ++i)
-    {
-      b = b * 10 + (str[i] - '0');
-    }
-    stack<char> s;
-    while (b > 0)
-    {
-      if (b % 26 == 0)
-      {
-        s.push('Z');
-        b -= 26;
-      }
-      else
-        s.push('A' - 1 + b % 26);
-      b /= 26;
-    }
-    while (!s.empty())
-    {
-      printf("%c", s.top());
-      s.pop();
-    }
-    printf("%d\n", a);
+    t = t / 10;
   }
-  else
+  ll a = t;
+  ll yy = n;
+  while (n >= 10)
   {
-    int pos;
-    for (int i = 0; i < str.size(); ++i)
-    {
-      if (isdigit(str[i]))
-      {
-        pos = i;
-        break;
-      }
-    }
-    int num = 0;
-    for (int i = 0; i < pos - 1; ++i)
-    {
-      num = num * 26 + (str[i] - 'A' + 1) * 26;
-    }
-    num += str[pos - 1] - 'A';
-    printf("R");
-    for (int i = pos; i < str.size(); ++i)
-      printf("%c", str[i]);
-    printf("C%d\n", num + 1);
+    a = a * 10 + t;
+    n = n / 10;
   }
+  if (yy >= a)
+  {
+    ans++;
+  }
+  // cout << ans << " " << t << endl;
+
+  cout << ans + t - 1 << endl;
 }
 int main()
 {

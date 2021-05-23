@@ -37,7 +37,10 @@ void pop_front(std::vector<T> &vec)
 }
 bool compPairF(pair<ll, ll> v1, pair<ll, ll> v2)
 {
-  return v1.first < v2.first;
+  if (v1.first != v2.first)
+    return v1.first > v2.first;
+  else
+    return v1.second < v2.second;
 }
 bool compPairS(pair<ll, ll> v1, pair<ll, ll> v2)
 {
@@ -57,6 +60,39 @@ bool compPairS(pair<ll, ll> v1, pair<ll, ll> v2)
 //    }
 //  }
 //}
+void swap(ll *a, ll *b)
+{
+  ll t = *a;
+  *a = *b;
+  *b = t;
+}
+ll partition(vector<ll> arr, int low, int high)
+{
+  int pivot = arr[high]; // pivot
+  int i = (low - 1);     // Index of smaller element and indicates the right position of pivot found so far
+
+  for (int j = low; j <= high - 1; j++)
+  {
+    // If current element is smaller than the pivot
+    if (arr[j] < pivot)
+    {
+      i++; // increment index of smaller element
+      swap(&arr[i], &arr[j]);
+    }
+  }
+  swap(&arr[i + 1], &arr[high]);
+  return (i + 1);
+}
+void quickSort(vector<ll> arr, int low, int high)
+{
+  if (low < high)
+  {
+    int pi = partition(arr, low, high);
+    quickSort(arr, low, pi - 1);
+    quickSort(arr, pi + 1, high);
+  }
+}
+
 ll gcd(ll a, ll b)
 {
   if (b == 0)
@@ -79,91 +115,60 @@ ll power(ll x, ll y)
   else
     return x * temp * temp;
 }
+const int MAXN = 200000;
+
+vector<int> v[1 + MAXN];
+int u[1 + MAXN], s[1 + MAXN];
+long long answer[1 + MAXN], sum[1 + MAXN];
 void sol()
 {
-  string str;
-  cin >> str;
-  ll type = 0, j = 0;
-  rep(i, 0, str.size())
+  int tests;
+  cin >> tests;
+  for (int test = 1; test <= tests; test++)
   {
-    if (int(str[i]) < 58)
+    int n;
+    cin >> n;
+    for (int i = 1; i <= n; i++)
     {
-      j++;
+      cin >> u[i];
     }
-    else if (j > 0)
+    for (int i = 1; i <= n; i++)
     {
-      type = 1;
-      break;
+      cin >> s[i];
     }
-  }
-  // cout << type << endl;
-  if (type != 0)
-  {
-    int pos, a = 0, b = 0;
-    for (int i = 0; i < str.size(); ++i)
+    for (int i = 1; i <= n; i++)
     {
-      if (str[i] == 'C')
+      v[u[i]].push_back(s[i]);
+      answer[i] = 0;
+    }
+    for (int i = 1; i <= n; i++)
+    {
+      sort(v[i].begin(), v[i].end());
+      int m = v[i].size();
+      for (int j = 1; j <= m; j++)
       {
-        pos = i;
-        break;
+        sum[j] = sum[j - 1] + v[i][j - 1];
+      }
+      for (int k = 1; k <= m; k++)
+      {
+        answer[k] += sum[m] - sum[m % k];
       }
     }
-    for (int i = 1; i < pos; ++i)
+    for (int i = 1; i <= n; i++)
     {
-      a = a * 10 + (str[i] - '0');
+      v[i].clear();
+      cout << answer[i] << " ";
     }
-    for (int i = pos + 1; i < str.size(); ++i)
-    {
-      b = b * 10 + (str[i] - '0');
-    }
-    stack<char> s;
-    while (b > 0)
-    {
-      if (b % 26 == 0)
-      {
-        s.push('Z');
-        b -= 26;
-      }
-      else
-        s.push('A' - 1 + b % 26);
-      b /= 26;
-    }
-    while (!s.empty())
-    {
-      printf("%c", s.top());
-      s.pop();
-    }
-    printf("%d\n", a);
+    cout << "\n";
   }
-  else
-  {
-    int pos;
-    for (int i = 0; i < str.size(); ++i)
-    {
-      if (isdigit(str[i]))
-      {
-        pos = i;
-        break;
-      }
-    }
-    int num = 0;
-    for (int i = 0; i < pos - 1; ++i)
-    {
-      num = num * 26 + (str[i] - 'A' + 1) * 26;
-    }
-    num += str[pos - 1] - 'A';
-    printf("R");
-    for (int i = pos; i < str.size(); ++i)
-      printf("%c", str[i]);
-    printf("C%d\n", num + 1);
-  }
+  return;
 }
 int main()
 {
   ios_base::sync_with_stdio(false);
   cin.tie(NULL);
   int a = 1;
-  cin >> a;
+  // cin >> a;
   while (a--)
   {
     sol();

@@ -79,84 +79,60 @@ ll power(ll x, ll y)
   else
     return x * temp * temp;
 }
+ll ans = 0;
+void unique_combination(ll l, ll sum, ll K,
+                        vector<ll> &local,
+                        vector<ll> &A)
+{
+  if (sum == K)
+  {
+    ans++;
+    cout << "{";
+    for (int i = 0; i < local.size(); i++)
+    {
+      if (i != 0)
+        cout << " ";
+      cout << local[i];
+      if (i != local.size() - 1)
+        cout << ", ";
+    }
+    cout << "}" << endl;
+    return;
+  }
+
+  for (ll i = l; i < A.size(); i++)
+  {
+    if (sum + A[i] > K)
+      continue;
+    if (i > l && A[i] == A[i - 1])
+      continue;
+
+    local.push_back(A[i]);
+    unique_combination(i + 1, sum + A[i], K, local, A);
+    local.pop_back();
+  }
+}
+
+void Combination(vector<ll> A, ll K)
+{
+  sort(A.begin(), A.end());
+
+  vector<ll> local;
+
+  unique_combination(0, 0, K, local, A);
+}
 void sol()
 {
-  string str;
-  cin >> str;
-  ll type = 0, j = 0;
-  rep(i, 0, str.size())
+  ll n, m, b;
+  ans = 0;
+  cin >> n >> m >> b;
+  vector<ll> v1(n * m);
+  rep(i, 0, n * m)
   {
-    if (int(str[i]) < 58)
-    {
-      j++;
-    }
-    else if (j > 0)
-    {
-      type = 1;
-      break;
-    }
+    cin >> v1[i];
   }
-  // cout << type << endl;
-  if (type != 0)
-  {
-    int pos, a = 0, b = 0;
-    for (int i = 0; i < str.size(); ++i)
-    {
-      if (str[i] == 'C')
-      {
-        pos = i;
-        break;
-      }
-    }
-    for (int i = 1; i < pos; ++i)
-    {
-      a = a * 10 + (str[i] - '0');
-    }
-    for (int i = pos + 1; i < str.size(); ++i)
-    {
-      b = b * 10 + (str[i] - '0');
-    }
-    stack<char> s;
-    while (b > 0)
-    {
-      if (b % 26 == 0)
-      {
-        s.push('Z');
-        b -= 26;
-      }
-      else
-        s.push('A' - 1 + b % 26);
-      b /= 26;
-    }
-    while (!s.empty())
-    {
-      printf("%c", s.top());
-      s.pop();
-    }
-    printf("%d\n", a);
-  }
-  else
-  {
-    int pos;
-    for (int i = 0; i < str.size(); ++i)
-    {
-      if (isdigit(str[i]))
-      {
-        pos = i;
-        break;
-      }
-    }
-    int num = 0;
-    for (int i = 0; i < pos - 1; ++i)
-    {
-      num = num * 26 + (str[i] - 'A' + 1) * 26;
-    }
-    num += str[pos - 1] - 'A';
-    printf("R");
-    for (int i = pos; i < str.size(); ++i)
-      printf("%c", str[i]);
-    printf("C%d\n", num + 1);
-  }
+  Combination(v1, b);
+  cout << ans << endl;
 }
 int main()
 {

@@ -79,91 +79,64 @@ ll power(ll x, ll y)
   else
     return x * temp * temp;
 }
+
+const int MAXN = 1001;
+
+int n;
+string s;
+int c[256];
+bool f[MAXN];
 void sol()
 {
-  string str;
-  cin >> str;
-  ll type = 0, j = 0;
-  rep(i, 0, str.size())
-  {
-    if (int(str[i]) < 58)
+  cin >> s;
+  n = s.size();
+  for (int i = 0; i < n; i++)
+    c[s[i]]++;
+
+  int k = 0;
+  for (int i = 0; i < 256; i++)
+    if (c[i] > c[k])
+      k = i;
+
+  memset(f, true, sizeof(f));
+  for (int i = 2; i * i <= n; i++)
+    if (f[i])
+      for (int j = i * i; j <= n; j += i)
+        f[j] = false;
+
+  f[1] = true;
+  for (int i = 2; i + i <= n; i++)
+    f[i] = false;
+
+  for (int i = 1; i <= n; i++)
+    if (!f[i])
     {
-      j++;
-    }
-    else if (j > 0)
-    {
-      type = 1;
-      break;
-    }
-  }
-  // cout << type << endl;
-  if (type != 0)
-  {
-    int pos, a = 0, b = 0;
-    for (int i = 0; i < str.size(); ++i)
-    {
-      if (str[i] == 'C')
+      if (c[k] == 0)
       {
-        pos = i;
-        break;
+        cout << "NO" << endl;
+        return;
       }
+      c[s[i - 1] = k]--;
     }
-    for (int i = 1; i < pos; ++i)
+
+  k = 0;
+  for (int i = 1; i <= n; i++)
+    if (f[i])
     {
-      a = a * 10 + (str[i] - '0');
+      while (c[k] == 0)
+        k++;
+      c[s[i - 1] = k]--;
     }
-    for (int i = pos + 1; i < str.size(); ++i)
-    {
-      b = b * 10 + (str[i] - '0');
-    }
-    stack<char> s;
-    while (b > 0)
-    {
-      if (b % 26 == 0)
-      {
-        s.push('Z');
-        b -= 26;
-      }
-      else
-        s.push('A' - 1 + b % 26);
-      b /= 26;
-    }
-    while (!s.empty())
-    {
-      printf("%c", s.top());
-      s.pop();
-    }
-    printf("%d\n", a);
-  }
-  else
-  {
-    int pos;
-    for (int i = 0; i < str.size(); ++i)
-    {
-      if (isdigit(str[i]))
-      {
-        pos = i;
-        break;
-      }
-    }
-    int num = 0;
-    for (int i = 0; i < pos - 1; ++i)
-    {
-      num = num * 26 + (str[i] - 'A' + 1) * 26;
-    }
-    num += str[pos - 1] - 'A';
-    printf("R");
-    for (int i = pos; i < str.size(); ++i)
-      printf("%c", str[i]);
-    printf("C%d\n", num + 1);
-  }
+  cout << "YES" << endl;
+  cout << s << endl;
+  return;
 }
 int main()
 {
   ios_base::sync_with_stdio(false);
   cin.tie(NULL);
   int a = 1;
-  cin >> a;
+  // cin >> a;
   while (a--)
   {
     sol();

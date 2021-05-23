@@ -26,6 +26,8 @@ using namespace std;
 #define res(i, a, b) for (ll i = a; i >= b; i--)
 #define all(n) n.begin(), n.end()
 #define mod 1000000007
+const int maxn = 3E5 + 5;
+
 typedef long long ll;
 const long long INF = 1e18 + 42;
 // vector<ll> primes(10005, 1);
@@ -79,84 +81,58 @@ ll power(ll x, ll y)
   else
     return x * temp * temp;
 }
+vector<ll> adj[maxn], dp, v1;
+vector<pair<ll, ll>> traking;
+void count(ll current, ll prev = -1)
+{
+  for (auto x : adj[current])
+  {
+    if (x != prev)
+      count(x, current);
+  }
+  traking.clear();
+  for (auto x : adj[current])
+  {
+    if (x != prev)
+      traking.emplace_back(dp[x], x);
+  }
+  sort(traking.begin(), traking.end());
+  reverse(traking.begin(), traking.end());
+  ll tok = 1;
+  for (auto i : traking)
+  {
+    ll _v1 = i.first;
+    ll id = i.second;
+    v1[id] = tok++;
+  }
+  for (auto x : adj[current])
+  {
+    if (x != prev)
+      dp[current] += v1[x] * dp[x];
+  }
+}
 void sol()
 {
-  string str;
-  cin >> str;
-  ll type = 0, j = 0;
-  rep(i, 0, str.size())
+  ll N, X;
+  cin >> N >> X;
+
+  dp.assign(N, 1), v1.assign(N, 0);
+  for (ll i = 0; i < N; ++i)
+    vector<ll>().swap(adj[i]);
+
+  for (ll i = 0; i < N - 1; ++i)
   {
-    if (int(str[i]) < 58)
-    {
-      j++;
-    }
-    else if (j > 0)
-    {
-      type = 1;
-      break;
-    }
+    ll u, v;
+    cin >> u >> v;
+    --u;
+    --v;
+    adj[u].push_back(v);
+    adj[v].push_back(u);
   }
-  // cout << type << endl;
-  if (type != 0)
-  {
-    int pos, a = 0, b = 0;
-    for (int i = 0; i < str.size(); ++i)
-    {
-      if (str[i] == 'C')
-      {
-        pos = i;
-        break;
-      }
-    }
-    for (int i = 1; i < pos; ++i)
-    {
-      a = a * 10 + (str[i] - '0');
-    }
-    for (int i = pos + 1; i < str.size(); ++i)
-    {
-      b = b * 10 + (str[i] - '0');
-    }
-    stack<char> s;
-    while (b > 0)
-    {
-      if (b % 26 == 0)
-      {
-        s.push('Z');
-        b -= 26;
-      }
-      else
-        s.push('A' - 1 + b % 26);
-      b /= 26;
-    }
-    while (!s.empty())
-    {
-      printf("%c", s.top());
-      s.pop();
-    }
-    printf("%d\n", a);
-  }
-  else
-  {
-    int pos;
-    for (int i = 0; i < str.size(); ++i)
-    {
-      if (isdigit(str[i]))
-      {
-        pos = i;
-        break;
-      }
-    }
-    int num = 0;
-    for (int i = 0; i < pos - 1; ++i)
-    {
-      num = num * 26 + (str[i] - 'A' + 1) * 26;
-    }
-    num += str[pos - 1] - 'A';
-    printf("R");
-    for (int i = pos; i < str.size(); ++i)
-      printf("%c", str[i]);
-    printf("C%d\n", num + 1);
-  }
+
+  count(0);
+
+  cout << dp[0] % mod * X % mod << "\n";
 }
 int main()
 {

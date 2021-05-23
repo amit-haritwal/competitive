@@ -79,91 +79,59 @@ ll power(ll x, ll y)
   else
     return x * temp * temp;
 }
+ll calacute(string str)
+{
+  ll ans = 0;
+  for (auto i : str)
+    if (i == '1')
+      ans++;
+  return ans;
+}
 void sol()
 {
+  ll n;
   string str;
-  cin >> str;
-  ll type = 0, j = 0;
-  rep(i, 0, str.size())
+  cin >> n >> str;
+  vector<pair<ll, ll>> v1(n);
+  rep(i, 0, n)
   {
-    if (int(str[i]) < 58)
-    {
-      j++;
-    }
-    else if (j > 0)
-    {
-      type = 1;
-      break;
-    }
+    cin >> v1[i].second >> v1[i].first;
   }
-  // cout << type << endl;
-  if (type != 0)
+  vector<ll> v2(n, 0);
+  ll i = 0, ans = 0;
+  while (i < 10000)
   {
-    int pos, a = 0, b = 0;
-    for (int i = 0; i < str.size(); ++i)
+    ans = max(ans, calacute(str));
+    rep(j, 0, n)
     {
-      if (str[i] == 'C')
+      if (v1[j].first <= i)
       {
-        pos = i;
-        break;
+        if (v2[j] == 0)
+        {
+          v2[j] = v1[j].second;
+          if (str[j] == '0')
+          {
+            str[j] = '1';
+          }
+          else
+          {
+            str[j] = '0';
+          }
+        }
+        v2[j]--;
       }
     }
-    for (int i = 1; i < pos; ++i)
-    {
-      a = a * 10 + (str[i] - '0');
-    }
-    for (int i = pos + 1; i < str.size(); ++i)
-    {
-      b = b * 10 + (str[i] - '0');
-    }
-    stack<char> s;
-    while (b > 0)
-    {
-      if (b % 26 == 0)
-      {
-        s.push('Z');
-        b -= 26;
-      }
-      else
-        s.push('A' - 1 + b % 26);
-      b /= 26;
-    }
-    while (!s.empty())
-    {
-      printf("%c", s.top());
-      s.pop();
-    }
-    printf("%d\n", a);
+    // cout << str << endl;
+    i++;
   }
-  else
-  {
-    int pos;
-    for (int i = 0; i < str.size(); ++i)
-    {
-      if (isdigit(str[i]))
-      {
-        pos = i;
-        break;
-      }
-    }
-    int num = 0;
-    for (int i = 0; i < pos - 1; ++i)
-    {
-      num = num * 26 + (str[i] - 'A' + 1) * 26;
-    }
-    num += str[pos - 1] - 'A';
-    printf("R");
-    for (int i = pos; i < str.size(); ++i)
-      printf("%c", str[i]);
-    printf("C%d\n", num + 1);
-  }
+  cout << ans << endl;
 }
 int main()
 {
   ios_base::sync_with_stdio(false);
   cin.tie(NULL);
   int a = 1;
-  cin >> a;
+  // cin >> a;
   while (a--)
   {
     sol();

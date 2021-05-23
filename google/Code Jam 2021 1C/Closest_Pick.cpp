@@ -10,6 +10,7 @@
 #include <list>
 #include <stack>
 #include <map>
+#include <unordered_map>
 #include <set>
 #include <functional>
 #include <numeric>
@@ -22,6 +23,7 @@
 #include <stdlib.h>
 #include <assert.h>
 using namespace std;
+typedef std::numeric_limits<double> dbl;
 #define rep(i, a, b) for (ll i = a; i < b; i++)
 #define res(i, a, b) for (ll i = a; i >= b; i--)
 #define all(n) n.begin(), n.end()
@@ -78,85 +80,67 @@ ll power(ll x, ll y)
     return temp * temp;
   else
     return x * temp * temp;
-}
+};
 void sol()
 {
-  string str;
-  cin >> str;
-  ll type = 0, j = 0;
-  rep(i, 0, str.size())
+  ll n, k;
+  cin >> n >> k;
+  unordered_map<ll, ll> mp;
+  rep(i, 0, n)
   {
-    if (int(str[i]) < 58)
-    {
-      j++;
-    }
-    else if (j > 0)
-    {
-      type = 1;
-      break;
-    }
+    ll t;
+    cin >> t;
+    mp[t]++;
   }
-  // cout << type << endl;
-  if (type != 0)
+  ll fg = 0, bg = 0;
+  ll i = 1;
+  while (!mp[i])
   {
-    int pos, a = 0, b = 0;
-    for (int i = 0; i < str.size(); ++i)
+    i++;
+    fg++;
+  }
+  i = k;
+  while (!mp[i])
+  {
+    i--;
+    bg++;
+  }
+  ll ans = fg + bg;
+  ll max1 = max(bg, fg);
+  ll max2 = min(bg, fg);
+  ll t = 1;
+  while (!mp[t])
+  {
+    t++;
+  }
+  rep(i, t, k)
+  {
+    if (!mp[i])
     {
-      if (str[i] == 'C')
+      ll temp = 0;
+      while (!mp[i] && i <= k)
       {
-        pos = i;
-        break;
+        i++;
+        temp++;
+      }
+      // cout << temp << " " << i << endl;
+      if (i <= k)
+      {
+        ll why = (temp + 1) / 2;
+        if (why > max1)
+        {
+          max2 = max1;
+          max1 = why;
+        }
+        else if (why > max2)
+        {
+          max2 = why;
+        }
+        ans = max({ans, temp, max1 + max2});
       }
     }
-    for (int i = 1; i < pos; ++i)
-    {
-      a = a * 10 + (str[i] - '0');
-    }
-    for (int i = pos + 1; i < str.size(); ++i)
-    {
-      b = b * 10 + (str[i] - '0');
-    }
-    stack<char> s;
-    while (b > 0)
-    {
-      if (b % 26 == 0)
-      {
-        s.push('Z');
-        b -= 26;
-      }
-      else
-        s.push('A' - 1 + b % 26);
-      b /= 26;
-    }
-    while (!s.empty())
-    {
-      printf("%c", s.top());
-      s.pop();
-    }
-    printf("%d\n", a);
   }
-  else
-  {
-    int pos;
-    for (int i = 0; i < str.size(); ++i)
-    {
-      if (isdigit(str[i]))
-      {
-        pos = i;
-        break;
-      }
-    }
-    int num = 0;
-    for (int i = 0; i < pos - 1; ++i)
-    {
-      num = num * 26 + (str[i] - 'A' + 1) * 26;
-    }
-    num += str[pos - 1] - 'A';
-    printf("R");
-    for (int i = pos; i < str.size(); ++i)
-      printf("%c", str[i]);
-    printf("C%d\n", num + 1);
-  }
+  cout << (double)ans / k << endl;
 }
 int main()
 {
@@ -164,8 +148,12 @@ int main()
   cin.tie(NULL);
   int a = 1;
   cin >> a;
+  int i = 1;
   while (a--)
   {
+    cout << "Case #" << i << ':' << ' ';
     sol();
+    // printf("Case #%d: %.9lf\n", i, 1. * t.first / t.second);
+    i++;
   }
 }

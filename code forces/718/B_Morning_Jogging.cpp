@@ -41,7 +41,7 @@ bool compPairF(pair<ll, ll> v1, pair<ll, ll> v2)
 }
 bool compPairS(pair<ll, ll> v1, pair<ll, ll> v2)
 {
-  return v1.second < v2.second;
+  return v1.second > v2.second;
 }
 //void sieveWithCount(ll n)
 //{
@@ -81,81 +81,77 @@ ll power(ll x, ll y)
 }
 void sol()
 {
-  string str;
-  cin >> str;
-  ll type = 0, j = 0;
-  rep(i, 0, str.size())
+  ll n, m;
+  cin >> n >> m;
+  vector<pair<ll, ll>> v1(m);
+  vector<vector<ll>> v2(n, vector<ll>(m, 0));
+  rep(i, 0, n)
   {
-    if (int(str[i]) < 58)
+
+    vector<ll> v3(m);
+    rep(j, 0, m)
     {
-      j++;
+      ll t = 0;
+      cin >> t;
+      if (i == 0)
+      {
+        v2[i][j] = t;
+        v1[j] = {j, t};
+      }
+      v3[j] = t;
     }
-    else if (j > 0)
+    if (i != 0)
     {
-      type = 1;
-      break;
+      sort(v3.begin(), v3.end());
+      ll flag = 0, k = 0;
+      rep(j, 0, m)
+      {
+        ll t = v3[j];
+        if (v1[k].second > t)
+        {
+          // cout << v1[k].first << " " << k << " " << v1[k].second << endl;
+          v2[i][v1[k].first] = t;
+          v1[k] = {v1[k].first, t};
+
+          k++;
+        }
+        else
+        {
+          rep(r, 0, m)
+          {
+            if (v2[i][r] == 0)
+            {
+              v2[i][r] = t;
+              break;
+            }
+          }
+        }
+        // rep(i, 0, n)
+        // {
+        //   rep(j, 0, m)
+        //   {
+        //     cout << v2[i][j] << " ";
+        //   }
+        //   cout << endl;
+        // }
+        // cout << "hi" << endl;
+        // for (auto i : v1)
+        // {
+        //   cout << i.second << " ";
+        // }
+        // cout << endl;
+        // cout << endl;
+      }
     }
+    sort(v1.begin(), v1.end(), compPairS);
   }
-  // cout << type << endl;
-  if (type != 0)
+  rep(i, 0, n)
   {
-    int pos, a = 0, b = 0;
-    for (int i = 0; i < str.size(); ++i)
+    rep(j, 0, m)
     {
-      if (str[i] == 'C')
-      {
-        pos = i;
-        break;
-      }
+      cout << v2[i][j] << " ";
     }
-    for (int i = 1; i < pos; ++i)
-    {
-      a = a * 10 + (str[i] - '0');
-    }
-    for (int i = pos + 1; i < str.size(); ++i)
-    {
-      b = b * 10 + (str[i] - '0');
-    }
-    stack<char> s;
-    while (b > 0)
-    {
-      if (b % 26 == 0)
-      {
-        s.push('Z');
-        b -= 26;
-      }
-      else
-        s.push('A' - 1 + b % 26);
-      b /= 26;
-    }
-    while (!s.empty())
-    {
-      printf("%c", s.top());
-      s.pop();
-    }
-    printf("%d\n", a);
-  }
-  else
-  {
-    int pos;
-    for (int i = 0; i < str.size(); ++i)
-    {
-      if (isdigit(str[i]))
-      {
-        pos = i;
-        break;
-      }
-    }
-    int num = 0;
-    for (int i = 0; i < pos - 1; ++i)
-    {
-      num = num * 26 + (str[i] - 'A' + 1) * 26;
-    }
-    num += str[pos - 1] - 'A';
-    printf("R");
-    for (int i = pos; i < str.size(); ++i)
-      printf("%c", str[i]);
-    printf("C%d\n", num + 1);
+    cout << endl;
   }
 }
 int main()

@@ -79,84 +79,100 @@ ll power(ll x, ll y)
   else
     return x * temp * temp;
 }
+ll bfs(map<ll, vector<ll>> graph, ll prev, ll tofind, ll current)
+{
+  if (tofind == current)
+  {
+    return 0;
+  }
+  vector<ll> v1 = graph[current];
+  for (auto i : v1)
+  {
+    if (i == tofind)
+    {
+      return 1;
+    }
+  }
+  for (auto i : v1)
+  {
+    if (i != prev)
+    {
+
+      ll t = bfs(graph, current, tofind, i);
+      if (t != -1)
+      {
+        return t + 1;
+      }
+    }
+  }
+  return -1;
+}
 void sol()
 {
-  string str;
-  cin >> str;
-  ll type = 0, j = 0;
-  rep(i, 0, str.size())
+  ll n, k, a;
+  cin >> n >> k >> a;
+  vector<ll> v1(k);
+  rep(i, 0, k)
   {
-    if (int(str[i]) < 58)
-    {
-      j++;
-    }
-    else if (j > 0)
-    {
-      type = 1;
-      break;
-    }
+    cin >> v1[i];
   }
-  // cout << type << endl;
-  if (type != 0)
+  map<ll, vector<ll>> graph;
+
+  rep(i, 0, n - 1)
   {
-    int pos, a = 0, b = 0;
-    for (int i = 0; i < str.size(); ++i)
+    ll t1, t2;
+    cin >> t1 >> t2;
+    graph[t1].push_back(t2);
+    graph[t2].push_back(t1);
+  }
+  map<pair<ll, ll>, ll> pre;
+  rep(i, 0, n)
+  {
+    rep(j, 0, k)
     {
-      if (str[i] == 'C')
+      if (!pre[{v1[j], i + 1}] && !pre[{i + 1, v1[j]}])
       {
-        pos = i;
-        break;
+        pre[{v1[j], i + 1}] = bfs(graph, -1, v1[j], i + 1);
+        pre[{i + 1, v1[j]}] = pre[{v1[j], i + 1}];
+      }
+      if (!pre[{v1[j], a}] && !pre[{a, v1[j]}])
+      {
+        pre[{v1[j], a}] = bfs(graph, -1, v1[j], a);
+        pre[{a, v1[j]}] = pre[{v1[j], a}];
       }
     }
-    for (int i = 1; i < pos; ++i)
-    {
-      a = a * 10 + (str[i] - '0');
-    }
-    for (int i = pos + 1; i < str.size(); ++i)
-    {
-      b = b * 10 + (str[i] - '0');
-    }
-    stack<char> s;
-    while (b > 0)
-    {
-      if (b % 26 == 0)
-      {
-        s.push('Z');
-        b -= 26;
-      }
-      else
-        s.push('A' - 1 + b % 26);
-      b /= 26;
-    }
-    while (!s.empty())
-    {
-      printf("%c", s.top());
-      s.pop();
-    }
-    printf("%d\n", a);
   }
-  else
+  vector<pair<ll, ll>> ans;
+  rep(i, 0, n)
   {
-    int pos;
-    for (int i = 0; i < str.size(); ++i)
+    ll min1 = 9999999, min2 = 0, valu1 = -1;
+    rep(j, 0, k)
     {
-      if (isdigit(str[i]))
+      ll t1 = pre[{v1[j], i + 1}];
+      ll t2 = pre[{v1[j], a}];
+      if (t1 == -1 || t2 == -1)
       {
-        pos = i;
-        break;
+        continue;
+      }
+      if (min2 - min1 < t2 - t1)
+      {
+        min2 = t2;
+        min1 = t1;
+        valu1 = v1[j];
       }
     }
-    int num = 0;
-    for (int i = 0; i < pos - 1; ++i)
-    {
-      num = num * 26 + (str[i] - 'A' + 1) * 26;
-    }
-    num += str[pos - 1] - 'A';
-    printf("R");
-    for (int i = pos; i < str.size(); ++i)
-      printf("%c", str[i]);
-    printf("C%d\n", num + 1);
+    ans.push_back({min2 - min1, valu1});
   }
+  rep(i, 0, n)
+  {
+    cout << ans[i].first << " ";
+  }
+  cout << endl;
+  rep(i, 0, n)
+  {
+    cout << ans[i].second << " ";
+  }
+  cout << endl;
 }
 int main()
 {

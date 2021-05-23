@@ -79,83 +79,92 @@ ll power(ll x, ll y)
   else
     return x * temp * temp;
 }
+bool isvalid(vector<string> v1, ll x, ll y, ll n, ll m)
+{
+  if (x < 0 || y < 0 || x >= n || y >= m || v1[x][y] != '.')
+  {
+    return false;
+  }
+  return true;
+}
+int convert(vector<string> v1, ll x, ll y, ll n, ll m)
+{
+  if (x < 0 || y < 0 || x >= n || y >= m)
+  {
+    return 1;
+  }
+  if (v1[x][y] == '.')
+  {
+    return 0;
+  }
+  return 1;
+}
+void solve(vector<string> &v1, ll x, ll y, ll &k, ll n, ll m)
+{
+  if (k == 0)
+  {
+    return;
+  }
+  if (v1[x][y] == '.')
+  {
+    if ((convert(v1, x + 1, y, n, m) + convert(v1, x, y + 1, n, m) + convert(v1, x - 1, y, n, m) + convert(v1, x, y - 1, n, m)) >= 3)
+    {
+      v1[x][y] = 'X';
+      k--;
+    }
+    if (k > 0 && isvalid(v1, x + 1, y, n, m))
+    {
+      solve(v1, x + 1, y, k, n, m);
+    }
+    if (isvalid(v1, x, y + 1, n, m))
+    {
+      solve(v1, x, y + 1, k, n, m);
+    }
+    if (isvalid(v1, x, y - 1, n, m))
+    {
+      solve(v1, x, y - 1, k, n, m);
+    }
+    if (isvalid(v1, x - 1, y, n, m))
+    {
+      solve(v1, x - 1, y, k, n, m);
+    }
+  }
+
+  if (v1[x][y] != '.')
+  {
+
+    if (isvalid(v1, x + 1, y, n, m))
+    {
+      solve(v1, x + 1, y, k, n, m);
+    }
+    if (isvalid(v1, x, y + 1, n, m))
+    {
+
+      solve(v1, x, y + 1, k, n, m);
+    }
+    if (isvalid(v1, x, y - 1, n, m))
+    {
+      solve(v1, x, y - 1, k, n, m);
+    }
+    if (isvalid(v1, x - 1, y, n, m))
+    {
+      solve(v1, x - 1, y, k, n, m);
+    }
+  }
+}
 void sol()
 {
-  string str;
-  cin >> str;
-  ll type = 0, j = 0;
-  rep(i, 0, str.size())
+  ll n, m, k;
+  cin >> n >> m >> k;
+  vector<string> v1(n);
+  rep(i, 0, n)
   {
-    if (int(str[i]) < 58)
-    {
-      j++;
-    }
-    else if (j > 0)
-    {
-      type = 1;
-      break;
-    }
+    cin >> v1[i];
   }
-  // cout << type << endl;
-  if (type != 0)
+  solve(v1, 0, 2, k, n, m);
+  for (auto i : v1)
   {
-    int pos, a = 0, b = 0;
-    for (int i = 0; i < str.size(); ++i)
-    {
-      if (str[i] == 'C')
-      {
-        pos = i;
-        break;
-      }
-    }
-    for (int i = 1; i < pos; ++i)
-    {
-      a = a * 10 + (str[i] - '0');
-    }
-    for (int i = pos + 1; i < str.size(); ++i)
-    {
-      b = b * 10 + (str[i] - '0');
-    }
-    stack<char> s;
-    while (b > 0)
-    {
-      if (b % 26 == 0)
-      {
-        s.push('Z');
-        b -= 26;
-      }
-      else
-        s.push('A' - 1 + b % 26);
-      b /= 26;
-    }
-    while (!s.empty())
-    {
-      printf("%c", s.top());
-      s.pop();
-    }
-    printf("%d\n", a);
-  }
-  else
-  {
-    int pos;
-    for (int i = 0; i < str.size(); ++i)
-    {
-      if (isdigit(str[i]))
-      {
-        pos = i;
-        break;
-      }
-    }
-    int num = 0;
-    for (int i = 0; i < pos - 1; ++i)
-    {
-      num = num * 26 + (str[i] - 'A' + 1) * 26;
-    }
-    num += str[pos - 1] - 'A';
-    printf("R");
-    for (int i = pos; i < str.size(); ++i)
-      printf("%c", str[i]);
-    printf("C%d\n", num + 1);
+    cout << i << endl;
   }
 }
 int main()
@@ -163,7 +172,7 @@ int main()
   ios_base::sync_with_stdio(false);
   cin.tie(NULL);
   int a = 1;
-  cin >> a;
+  // cin >> a;
   while (a--)
   {
     sol();

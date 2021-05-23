@@ -39,6 +39,10 @@ bool compPairF(pair<ll, ll> v1, pair<ll, ll> v2)
 {
   return v1.first < v2.first;
 }
+bool comp(vector<ll> v1, vector<ll> v2)
+{
+  return v1[0] < v2[0];
+}
 bool compPairS(pair<ll, ll> v1, pair<ll, ll> v2)
 {
   return v1.second < v2.second;
@@ -81,89 +85,76 @@ ll power(ll x, ll y)
 }
 void sol()
 {
-  string str;
-  cin >> str;
-  ll type = 0, j = 0;
-  rep(i, 0, str.size())
+  ll n, k;
+  cin >> n >> k;
+  vector<vector<ll>> v1;
+  rep(i, 0, n)
   {
-    if (int(str[i]) < 58)
-    {
-      j++;
-    }
-    else if (j > 0)
-    {
-      type = 1;
-      break;
-    }
+    vector<ll> v2(3);
+    cin >> v2[0] >> v2[1] >> v2[2];
+    if (v2[1] != 0 || v2[2] != 0)
+      v1.push_back(v2);
   }
-  // cout << type << endl;
-  if (type != 0)
+  sort(v1.begin(), v1.end(), comp);
+  vector<ll> ans;
+  priority_queue<ll, vector<ll>, greater<ll>> a;
+  priority_queue<ll, vector<ll>, greater<ll>> b;
+
+  for (auto i : v1)
   {
-    int pos, a = 0, b = 0;
-    for (int i = 0; i < str.size(); ++i)
+    if (i[1] == 1 && i[2] == 1)
     {
-      if (str[i] == 'C')
+      ans.push_back(i[0]);
+    }
+    else if (i[1] == 1)
+    {
+      if (a.empty())
       {
-        pos = i;
-        break;
-      }
-    }
-    for (int i = 1; i < pos; ++i)
-    {
-      a = a * 10 + (str[i] - '0');
-    }
-    for (int i = pos + 1; i < str.size(); ++i)
-    {
-      b = b * 10 + (str[i] - '0');
-    }
-    stack<char> s;
-    while (b > 0)
-    {
-      if (b % 26 == 0)
-      {
-        s.push('Z');
-        b -= 26;
+        b.push(i[0]);
       }
       else
-        s.push('A' - 1 + b % 26);
-      b /= 26;
-    }
-    while (!s.empty())
-    {
-      printf("%c", s.top());
-      s.pop();
-    }
-    printf("%d\n", a);
-  }
-  else
-  {
-    int pos;
-    for (int i = 0; i < str.size(); ++i)
-    {
-      if (isdigit(str[i]))
       {
-        pos = i;
-        break;
+        ll t = a.top();
+        a.pop();
+        ans.push_back(t + i[0]);
       }
     }
-    int num = 0;
-    for (int i = 0; i < pos - 1; ++i)
+    else
     {
-      num = num * 26 + (str[i] - 'A' + 1) * 26;
+      if (b.empty())
+      {
+        a.push(i[0]);
+      }
+      else
+      {
+        ll t = b.top();
+        b.pop();
+        ans.push_back(t + i[0]);
+      }
     }
-    num += str[pos - 1] - 'A';
-    printf("R");
-    for (int i = pos; i < str.size(); ++i)
-      printf("%c", str[i]);
-    printf("C%d\n", num + 1);
   }
+  sort(ans.begin(), ans.end());
+  ll final = 0;
+  for (auto i : ans)
+  {
+    if (k == 0)
+    {
+      break;
+    }
+    k--;
+    final += i;
+  }
+  if (k == 0)
+    cout << final << endl;
+  else
+    cout << -1 << endl;
 }
 int main()
 {
   ios_base::sync_with_stdio(false);
   cin.tie(NULL);
   int a = 1;
-  cin >> a;
+  // cin >> a;
   while (a--)
   {
     sol();

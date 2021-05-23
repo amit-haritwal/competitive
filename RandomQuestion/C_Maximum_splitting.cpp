@@ -81,81 +81,34 @@ ll power(ll x, ll y)
 }
 void sol()
 {
-  string str;
-  cin >> str;
-  ll type = 0, j = 0;
-  rep(i, 0, str.size())
+  int maxn = 16;
+  vector<int> ans(maxn, -1);
+  ans[0] = 0;
+  for (int i = 1; i < maxn; ++i)
   {
-    if (int(str[i]) < 58)
+    for (auto j : vector<int>{4, 6, 9})
     {
-      j++;
-    }
-    else if (j > 0)
-    {
-      type = 1;
-      break;
+      if (i >= j && ans[i - j] != -1)
+      {
+        ans[i] = max(ans[i], ans[i - j] + 1);
+      }
     }
   }
-  // cout << type << endl;
-  if (type != 0)
+  int q;
+  cin >> q;
+  for (int i = 0; i < q; ++i)
   {
-    int pos, a = 0, b = 0;
-    for (int i = 0; i < str.size(); ++i)
+    int n;
+    cin >> n;
+    if (n < maxn)
     {
-      if (str[i] == 'C')
-      {
-        pos = i;
-        break;
-      }
+      cout << ans[n] << '\n';
     }
-    for (int i = 1; i < pos; ++i)
+    else
     {
-      a = a * 10 + (str[i] - '0');
+      int t = (n - maxn) / 4 + 1;
+      cout << t + ans[n - 4 * t] << '\n';
     }
-    for (int i = pos + 1; i < str.size(); ++i)
-    {
-      b = b * 10 + (str[i] - '0');
-    }
-    stack<char> s;
-    while (b > 0)
-    {
-      if (b % 26 == 0)
-      {
-        s.push('Z');
-        b -= 26;
-      }
-      else
-        s.push('A' - 1 + b % 26);
-      b /= 26;
-    }
-    while (!s.empty())
-    {
-      printf("%c", s.top());
-      s.pop();
-    }
-    printf("%d\n", a);
-  }
-  else
-  {
-    int pos;
-    for (int i = 0; i < str.size(); ++i)
-    {
-      if (isdigit(str[i]))
-      {
-        pos = i;
-        break;
-      }
-    }
-    int num = 0;
-    for (int i = 0; i < pos - 1; ++i)
-    {
-      num = num * 26 + (str[i] - 'A' + 1) * 26;
-    }
-    num += str[pos - 1] - 'A';
-    printf("R");
-    for (int i = pos; i < str.size(); ++i)
-      printf("%c", str[i]);
-    printf("C%d\n", num + 1);
   }
 }
 int main()
@@ -163,7 +116,7 @@ int main()
   ios_base::sync_with_stdio(false);
   cin.tie(NULL);
   int a = 1;
-  cin >> a;
+  // cin >> a;
   while (a--)
   {
     sol();

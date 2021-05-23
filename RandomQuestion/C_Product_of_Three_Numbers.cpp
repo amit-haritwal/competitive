@@ -81,81 +81,33 @@ ll power(ll x, ll y)
 }
 void sol()
 {
-  string str;
-  cin >> str;
-  ll type = 0, j = 0;
-  rep(i, 0, str.size())
+  ll n;
+  cin >> n;
+  ll ans1 = 0, ans2 = 0;
+  rep(i, 2, sqrt(n))
   {
-    if (int(str[i]) < 58)
+    if (n % i == 0)
     {
-      j++;
-    }
-    else if (j > 0)
-    {
-      type = 1;
+      ans1 = i;
+      n = n / i;
       break;
     }
   }
-  // cout << type << endl;
-  if (type != 0)
+  rep(i, 2, sqrt(n))
   {
-    int pos, a = 0, b = 0;
-    for (int i = 0; i < str.size(); ++i)
+    if (n % i == 0 && ans1 != i)
     {
-      if (str[i] == 'C')
-      {
-        pos = i;
-        break;
-      }
+      ans2 = i;
+      n = n / i;
+      break;
     }
-    for (int i = 1; i < pos; ++i)
-    {
-      a = a * 10 + (str[i] - '0');
-    }
-    for (int i = pos + 1; i < str.size(); ++i)
-    {
-      b = b * 10 + (str[i] - '0');
-    }
-    stack<char> s;
-    while (b > 0)
-    {
-      if (b % 26 == 0)
-      {
-        s.push('Z');
-        b -= 26;
-      }
-      else
-        s.push('A' - 1 + b % 26);
-      b /= 26;
-    }
-    while (!s.empty())
-    {
-      printf("%c", s.top());
-      s.pop();
-    }
-    printf("%d\n", a);
   }
+  if (ans1 == 0 || ans2 == 0 || n == 1 || ans1 == n || ans2 == n)
+    cout << "NO" << endl;
   else
   {
-    int pos;
-    for (int i = 0; i < str.size(); ++i)
-    {
-      if (isdigit(str[i]))
-      {
-        pos = i;
-        break;
-      }
-    }
-    int num = 0;
-    for (int i = 0; i < pos - 1; ++i)
-    {
-      num = num * 26 + (str[i] - 'A' + 1) * 26;
-    }
-    num += str[pos - 1] - 'A';
-    printf("R");
-    for (int i = pos; i < str.size(); ++i)
-      printf("%c", str[i]);
-    printf("C%d\n", num + 1);
+    cout << "YES" << endl;
+    cout << ans1 << " " << ans2 << " " << n << endl;
   }
 }
 int main()

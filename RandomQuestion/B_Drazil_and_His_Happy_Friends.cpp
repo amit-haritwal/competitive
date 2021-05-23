@@ -81,89 +81,62 @@ ll power(ll x, ll y)
 }
 void sol()
 {
-  string str;
-  cin >> str;
-  ll type = 0, j = 0;
-  rep(i, 0, str.size())
+  ll n, m;
+  cin >> n >> m;
+  ll nc;
+  cin >> nc;
+  vector<ll> v1(n, 0);
+  rep(i, 0, nc)
   {
-    if (int(str[i]) < 58)
+    ll t;
+    cin >> t;
+    v1[t] = 1;
+  }
+  ll mc;
+  cin >> mc;
+  vector<ll> v2(m, 0);
+  rep(i, 0, mc)
+  {
+    ll t;
+    cin >> t;
+    v2[t] = 1;
+  }
+
+  rep(i, 0, max(n, m) * max(n, m))
+  {
+    if (v1[i % n] == 1 || v2[i % m] == 1)
     {
-      j++;
-    }
-    else if (j > 0)
-    {
-      type = 1;
-      break;
+      v1[i % n] = 1;
+      v2[i % m] = 1;
     }
   }
-  // cout << type << endl;
-  if (type != 0)
+  for (auto i : v1)
   {
-    int pos, a = 0, b = 0;
-    for (int i = 0; i < str.size(); ++i)
+    // cout << i << " ";
+    if (i != 1)
     {
-      if (str[i] == 'C')
-      {
-        pos = i;
-        break;
-      }
+      cout << "No" << endl;
+      return;
     }
-    for (int i = 1; i < pos; ++i)
-    {
-      a = a * 10 + (str[i] - '0');
-    }
-    for (int i = pos + 1; i < str.size(); ++i)
-    {
-      b = b * 10 + (str[i] - '0');
-    }
-    stack<char> s;
-    while (b > 0)
-    {
-      if (b % 26 == 0)
-      {
-        s.push('Z');
-        b -= 26;
-      }
-      else
-        s.push('A' - 1 + b % 26);
-      b /= 26;
-    }
-    while (!s.empty())
-    {
-      printf("%c", s.top());
-      s.pop();
-    }
-    printf("%d\n", a);
   }
-  else
+  // cout << endl;
+  for (auto i : v2)
   {
-    int pos;
-    for (int i = 0; i < str.size(); ++i)
+    // cout << i << " ";
+    if (i != 1)
     {
-      if (isdigit(str[i]))
-      {
-        pos = i;
-        break;
-      }
+      cout << "No" << endl;
+      return;
     }
-    int num = 0;
-    for (int i = 0; i < pos - 1; ++i)
-    {
-      num = num * 26 + (str[i] - 'A' + 1) * 26;
-    }
-    num += str[pos - 1] - 'A';
-    printf("R");
-    for (int i = pos; i < str.size(); ++i)
-      printf("%c", str[i]);
-    printf("C%d\n", num + 1);
   }
+  cout << "Yes" << endl;
 }
 int main()
 {
   ios_base::sync_with_stdio(false);
   cin.tie(NULL);
   int a = 1;
-  cin >> a;
+  // cin >> a;
   while (a--)
   {
     sol();

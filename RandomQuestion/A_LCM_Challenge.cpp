@@ -43,8 +43,8 @@ bool compPairS(pair<ll, ll> v1, pair<ll, ll> v2)
 {
   return v1.second < v2.second;
 }
-//void sieveWithCount(ll n)
-//{
+// void sieveWithCount(ll n)
+// {
 //  vector<bool> v1(n, 1);
 //  for (ll i = 2; i * i < n; i++)
 //  {
@@ -56,7 +56,7 @@ bool compPairS(pair<ll, ll> v1, pair<ll, ll> v2)
 //      }
 //    }
 //  }
-//}
+// }
 ll gcd(ll a, ll b)
 {
   if (b == 0)
@@ -67,6 +67,17 @@ ll gcd(ll a, ll b)
   {
     return gcd(b, a % b);
   }
+}
+bool isPrime(ll a)
+{
+  for (int i = 2; i * i < a; i++)
+  {
+    if (a % i == 0)
+    {
+      return false;
+    }
+  }
+  return true;
 }
 ll power(ll x, ll y)
 {
@@ -81,89 +92,29 @@ ll power(ll x, ll y)
 }
 void sol()
 {
-  string str;
-  cin >> str;
-  ll type = 0, j = 0;
-  rep(i, 0, str.size())
-  {
-    if (int(str[i]) < 58)
-    {
-      j++;
-    }
-    else if (j > 0)
-    {
-      type = 1;
-      break;
-    }
-  }
-  // cout << type << endl;
-  if (type != 0)
-  {
-    int pos, a = 0, b = 0;
-    for (int i = 0; i < str.size(); ++i)
-    {
-      if (str[i] == 'C')
+  ll n;
+  cin >> n;
+  ll count = 0;
+
+  ll x, y, z;
+  ll ans = 0;
+
+  for (x = n; x * x * x > ans; x--)
+    for (y = x; x * y * y > ans; y--)
+      for (z = y; x * y * z > ans; z--)
       {
-        pos = i;
-        break;
+        if (gcd(x, y) == 1 && gcd(x, z) == 1 && gcd(y, z) == 1)
+          ans = x * y * z;
       }
-    }
-    for (int i = 1; i < pos; ++i)
-    {
-      a = a * 10 + (str[i] - '0');
-    }
-    for (int i = pos + 1; i < str.size(); ++i)
-    {
-      b = b * 10 + (str[i] - '0');
-    }
-    stack<char> s;
-    while (b > 0)
-    {
-      if (b % 26 == 0)
-      {
-        s.push('Z');
-        b -= 26;
-      }
-      else
-        s.push('A' - 1 + b % 26);
-      b /= 26;
-    }
-    while (!s.empty())
-    {
-      printf("%c", s.top());
-      s.pop();
-    }
-    printf("%d\n", a);
-  }
-  else
-  {
-    int pos;
-    for (int i = 0; i < str.size(); ++i)
-    {
-      if (isdigit(str[i]))
-      {
-        pos = i;
-        break;
-      }
-    }
-    int num = 0;
-    for (int i = 0; i < pos - 1; ++i)
-    {
-      num = num * 26 + (str[i] - 'A' + 1) * 26;
-    }
-    num += str[pos - 1] - 'A';
-    printf("R");
-    for (int i = pos; i < str.size(); ++i)
-      printf("%c", str[i]);
-    printf("C%d\n", num + 1);
-  }
+
+  cout << ans << endl;
 }
 int main()
 {
   ios_base::sync_with_stdio(false);
   cin.tie(NULL);
   int a = 1;
-  cin >> a;
+  // cin >> a;
   while (a--)
   {
     sol();

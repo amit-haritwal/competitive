@@ -81,82 +81,64 @@ ll power(ll x, ll y)
 }
 void sol()
 {
-  string str;
-  cin >> str;
-  ll type = 0, j = 0;
-  rep(i, 0, str.size())
+  vector<long long> in(3);
+  for (int i = 0; i < 3; ++i)
   {
-    if (int(str[i]) < 58)
-    {
-      j++;
-    }
-    else if (j > 0)
-    {
-      type = 1;
-      break;
-    }
+    scanf("%lld", &in[i]);
   }
-  // cout << type << endl;
-  if (type != 0)
+  const long long M = 360 * 12 * 10LL * 1000 * 1000 * 1000;
+  do
   {
-    int pos, a = 0, b = 0;
-    for (int i = 0; i < str.size(); ++i)
+    long long diff = in[1] - in[0];
+    if (diff < 0)
     {
-      if (str[i] == 'C')
+      diff += M;
+    }
+    // 11 * x == diff
+    for (int rep = 0; rep < 12; ++rep)
+    {
+      // 11 * x == rep * M + diff
+      long long tmp = rep * M + diff;
+      if (tmp % 11 == 0)
       {
-        pos = i;
-        break;
+        long long x = tmp / 11;
+        long long shift = in[0] - x;
+        if (shift < 0)
+        {
+          shift += M;
+        }
+        bool ok = true;
+        for (int i = 0; i < 3; ++i)
+        {
+          if ((vector<int>{1, 12, 720}[i] * x + shift) % M != in[i])
+          {
+            ok = false;
+          }
+        }
+        if (ok)
+        {
+          vector<long long> answer;
+          answer.push_back(x % 1'000'000'000);
+          x /= 1'000'000'000;
+          answer.push_back(x % 60);
+          x /= 60;
+          answer.push_back(x % 60);
+          x /= 60;
+          answer.push_back(x);
+          reverse(answer.begin(), answer.end());
+          if (answer[0] < 12)
+          {
+            for (long long x : answer)
+            {
+              printf(" %lld", x);
+            }
+            puts("");
+            return;
+          }
+        }
       }
     }
-    for (int i = 1; i < pos; ++i)
-    {
-      a = a * 10 + (str[i] - '0');
-    }
-    for (int i = pos + 1; i < str.size(); ++i)
-    {
-      b = b * 10 + (str[i] - '0');
-    }
-    stack<char> s;
-    while (b > 0)
-    {
-      if (b % 26 == 0)
-      {
-        s.push('Z');
-        b -= 26;
-      }
-      else
-        s.push('A' - 1 + b % 26);
-      b /= 26;
-    }
-    while (!s.empty())
-    {
-      printf("%c", s.top());
-      s.pop();
-    }
-    printf("%d\n", a);
-  }
-  else
-  {
-    int pos;
-    for (int i = 0; i < str.size(); ++i)
-    {
-      if (isdigit(str[i]))
-      {
-        pos = i;
-        break;
-      }
-    }
-    int num = 0;
-    for (int i = 0; i < pos - 1; ++i)
-    {
-      num = num * 26 + (str[i] - 'A' + 1) * 26;
-    }
-    num += str[pos - 1] - 'A';
-    printf("R");
-    for (int i = pos; i < str.size(); ++i)
-      printf("%c", str[i]);
-    printf("C%d\n", num + 1);
-  }
+  } while (next_permutation(in.begin(), in.end()));
 }
 int main()
 {
@@ -164,8 +146,11 @@ int main()
   cin.tie(NULL);
   int a = 1;
   cin >> a;
+  int i = 1;
   while (a--)
   {
+    cout << "Case #" << i << ':' << ' ';
     sol();
+    i++;
   }
 }

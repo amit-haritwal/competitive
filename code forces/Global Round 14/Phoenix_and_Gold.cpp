@@ -81,82 +81,54 @@ ll power(ll x, ll y)
 }
 void sol()
 {
-  string str;
-  cin >> str;
-  ll type = 0, j = 0;
-  rep(i, 0, str.size())
+  ll n, k;
+  cin >> n >> k;
+  vector<ll> v1(n);
+  ll sum = 0, flag = 0;
+  rep(i, 0, n)
   {
-    if (int(str[i]) < 58)
+    cin >> v1[i];
+    sum += v1[i];
+
+    if (sum == k)
     {
-      j++;
+      flag = 1;
     }
-    else if (j > 0)
+  }
+  if (flag == 0)
+  {
+    cout << "YES" << endl;
+    rep(i, 0, n)
     {
-      type = 1;
+      cout << v1[i] << " ";
+    }
+    cout << endl;
+    return;
+  }
+  if (sum == k)
+  {
+    cout << "NO" << endl;
+    return;
+  }
+  sort(v1.begin(), v1.end());
+  sum = 0;
+  rep(i, 0, n)
+  {
+    sum += v1[i];
+    if (sum == k)
+    {
+      swap(v1[i], v1[i + 1]);
+
       break;
     }
   }
-  // cout << type << endl;
-  if (type != 0)
+  cout << "YES" << endl;
+  rep(i, 0, n)
   {
-    int pos, a = 0, b = 0;
-    for (int i = 0; i < str.size(); ++i)
-    {
-      if (str[i] == 'C')
-      {
-        pos = i;
-        break;
-      }
-    }
-    for (int i = 1; i < pos; ++i)
-    {
-      a = a * 10 + (str[i] - '0');
-    }
-    for (int i = pos + 1; i < str.size(); ++i)
-    {
-      b = b * 10 + (str[i] - '0');
-    }
-    stack<char> s;
-    while (b > 0)
-    {
-      if (b % 26 == 0)
-      {
-        s.push('Z');
-        b -= 26;
-      }
-      else
-        s.push('A' - 1 + b % 26);
-      b /= 26;
-    }
-    while (!s.empty())
-    {
-      printf("%c", s.top());
-      s.pop();
-    }
-    printf("%d\n", a);
+    cout << v1[i] << " ";
   }
-  else
-  {
-    int pos;
-    for (int i = 0; i < str.size(); ++i)
-    {
-      if (isdigit(str[i]))
-      {
-        pos = i;
-        break;
-      }
-    }
-    int num = 0;
-    for (int i = 0; i < pos - 1; ++i)
-    {
-      num = num * 26 + (str[i] - 'A' + 1) * 26;
-    }
-    num += str[pos - 1] - 'A';
-    printf("R");
-    for (int i = pos; i < str.size(); ++i)
-      printf("%c", str[i]);
-    printf("C%d\n", num + 1);
-  }
+  cout << endl;
+  return;
 }
 int main()
 {

@@ -79,91 +79,53 @@ ll power(ll x, ll y)
   else
     return x * temp * temp;
 }
+vector<int> v1[200005];
+int height[200005], nochilds[200005];
+void findans(ll current, ll parent)
+{
+  nochilds[current] = 1;
+  rep(i, 0, v1[current].size())
+  {
+    if (v1[current][i] == parent)
+      continue;
+    height[v1[current][i]] = height[current] + 1;
+
+    findans(v1[current][i], current);
+    nochilds[current] += nochilds[v1[current][i]];
+  }
+}
 void sol()
 {
-  string str;
-  cin >> str;
-  ll type = 0, j = 0;
-  rep(i, 0, str.size())
+  int n, k;
+  cin >> n >> k;
+  for (int i = 1; i < n; i++)
   {
-    if (int(str[i]) < 58)
-    {
-      j++;
-    }
-    else if (j > 0)
-    {
-      type = 1;
-      break;
-    }
+    int a, b;
+    cin >> a >> b;
+    v1[a - 1].push_back(b - 1);
+    v1[b - 1].push_back(a - 1);
   }
-  // cout << type << endl;
-  if (type != 0)
+  vector<ll> ans(n);
+  findans(0, -1);
+  rep(i, 0, n)
   {
-    int pos, a = 0, b = 0;
-    for (int i = 0; i < str.size(); ++i)
-    {
-      if (str[i] == 'C')
-      {
-        pos = i;
-        break;
-      }
-    }
-    for (int i = 1; i < pos; ++i)
-    {
-      a = a * 10 + (str[i] - '0');
-    }
-    for (int i = pos + 1; i < str.size(); ++i)
-    {
-      b = b * 10 + (str[i] - '0');
-    }
-    stack<char> s;
-    while (b > 0)
-    {
-      if (b % 26 == 0)
-      {
-        s.push('Z');
-        b -= 26;
-      }
-      else
-        s.push('A' - 1 + b % 26);
-      b /= 26;
-    }
-    while (!s.empty())
-    {
-      printf("%c", s.top());
-      s.pop();
-    }
-    printf("%d\n", a);
+    ans[i] = nochilds[i] - height[i] - 1;
   }
-  else
+  sort(ans.begin(), ans.end());
+  reverse(ans.begin(), ans.end());
+  ll sum = 0;
+  rep(i, 0, n - k)
   {
-    int pos;
-    for (int i = 0; i < str.size(); ++i)
-    {
-      if (isdigit(str[i]))
-      {
-        pos = i;
-        break;
-      }
-    }
-    int num = 0;
-    for (int i = 0; i < pos - 1; ++i)
-    {
-      num = num * 26 + (str[i] - 'A' + 1) * 26;
-    }
-    num += str[pos - 1] - 'A';
-    printf("R");
-    for (int i = pos; i < str.size(); ++i)
-      printf("%c", str[i]);
-    printf("C%d\n", num + 1);
+    sum += ans[i];
   }
+  cout << sum << endl;
 }
 int main()
 {
   ios_base::sync_with_stdio(false);
   cin.tie(NULL);
   int a = 1;
-  cin >> a;
+  // cin >> a;
   while (a--)
   {
     sol();

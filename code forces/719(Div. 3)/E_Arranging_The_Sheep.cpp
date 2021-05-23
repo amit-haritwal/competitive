@@ -81,82 +81,63 @@ ll power(ll x, ll y)
 }
 void sol()
 {
-  string str;
-  cin >> str;
-  ll type = 0, j = 0;
-  rep(i, 0, str.size())
+  ll n;
+  string str1;
+  cin >> n >> str1;
+  string str = "";
+  ll i = 0;
+  while (str1[i] == '.')
   {
-    if (int(str[i]) < 58)
-    {
-      j++;
-    }
-    else if (j > 0)
-    {
-      type = 1;
+    i++;
+  }
+  ll t = n - 1;
+  while (str1[t] == '.')
+  {
+    t--;
+    if (t == -1)
       break;
-    }
   }
-  // cout << type << endl;
-  if (type != 0)
+  if (t == -1)
   {
-    int pos, a = 0, b = 0;
-    for (int i = 0; i < str.size(); ++i)
-    {
-      if (str[i] == 'C')
-      {
-        pos = i;
-        break;
-      }
-    }
-    for (int i = 1; i < pos; ++i)
-    {
-      a = a * 10 + (str[i] - '0');
-    }
-    for (int i = pos + 1; i < str.size(); ++i)
-    {
-      b = b * 10 + (str[i] - '0');
-    }
-    stack<char> s;
-    while (b > 0)
-    {
-      if (b % 26 == 0)
-      {
-        s.push('Z');
-        b -= 26;
-      }
-      else
-        s.push('A' - 1 + b % 26);
-      b /= 26;
-    }
-    while (!s.empty())
-    {
-      printf("%c", s.top());
-      s.pop();
-    }
-    printf("%d\n", a);
+    cout << 0 << endl;
+    return;
   }
-  else
+  rep(j, i, t + 1)
   {
-    int pos;
-    for (int i = 0; i < str.size(); ++i)
-    {
-      if (isdigit(str[i]))
-      {
-        pos = i;
-        break;
-      }
-    }
-    int num = 0;
-    for (int i = 0; i < pos - 1; ++i)
-    {
-      num = num * 26 + (str[i] - 'A' + 1) * 26;
-    }
-    num += str[pos - 1] - 'A';
-    printf("R");
-    for (int i = pos; i < str.size(); ++i)
-      printf("%c", str[i]);
-    printf("C%d\n", num + 1);
+    str += str1[j];
   }
+  if (str.size() == 0)
+  {
+    cout << 0 << endl;
+    return;
+  }
+  n = t - i + 1;
+  vector<ll> v1(n, 0);
+  ll ans1 = 0, ans2 = 0;
+
+  if (str[0] == '*')
+  {
+    v1[0] = 1;
+  }
+  rep(i, 1, n)
+  {
+    if (str[i] != '*')
+    {
+      v1[i] = v1[i - 1];
+    }
+    else if (str[i] == '*')
+    {
+      v1[i] += v1[i - 1] + 1;
+    }
+  }
+  rep(i, 1, n)
+  {
+    if (str[i] == '.')
+    {
+      ans1 += min(v1[i - 1], v1[n - 1] - v1[i]);
+    }
+  }
+  cout << ans1 << endl;
 }
 int main()
 {
