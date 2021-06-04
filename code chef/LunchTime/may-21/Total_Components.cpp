@@ -8,6 +8,19 @@
 #include <bitset>
 #include <iterator>
 #include <list>
+#include <stack>
+#include <map>
+#include <set>
+#include <functional>
+#include <numeric>
+#include <utility>
+#include <limits>
+#include <time.h>
+#include <math.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <assert.h>
 using namespace std;
 #define rep(i, a, b) for (ll i = a; i < b; i++)
 #define res(i, a, b) for (ll i = a; i >= b; i--)
@@ -66,59 +79,57 @@ ll power(ll x, ll y)
   else
     return x * temp * temp;
 }
+bool prime[10000002];
+
+void SieveOfEratosthenes(ll n)
+{
+    // Create a boolean array
+    // "prime[0..n]" and initialize
+    // all entries it as true.
+    // A value in prime[i] will
+    // finally be false if i is
+    // Not a prime, else true.
+
+    memset(prime, true, sizeof(prime));
+ 
+    for (int p = 2; p * p <= n; p++)
+    {
+        // If prime[p] is not changed,
+        // then it is a prime
+        if (prime[p] == true)
+        {
+            for (int i = p * p; i <= n; i += p)
+                prime[i] = false;
+        }
+    }
+}
+ 
+
+
+
+vector<ll> precomp(10000001);
 void sol()
 {
   ll n;
-  cin >> n;
-  vector<ll> v1(n);
-  ll sum = 0;
-  rep(i, 0, n)
-  {
-    cin >> v1[i];
+  cin>>n;
+  ll ans=1;
+  if(n>=3){
+    ans+= precomp[n]- precomp[max(n/2,(ll)2)];
   }
-  priority_queue<ll, vector<ll>, greater<ll> > pq;
-  ll ans = 0;
-  for(auto i: v1)cout<<i<<endl;
-  rep(i, 0, n)
- {
-    if (v1[i] < 0)
-    {
-      if (sum + v1[i] >= 0)
-      {
-        ans++;
-        sum += v1[i];
-        pq.push(abs(v1[i]));
-      }
-      else if (!pq.empty())
-      {
-        ll temp = pq.top();
-        if (v1[i] <= temp)
-        {
-          continue;
-        }
-        else
-        {
-          pq.pop();
-          pq.push(abs(v1[i]));
-          sum += v1[i];
-          sum += temp;
-        }
-      }
-    }
-    else
-    {
-      ans++;
-      sum += v1[i];
-    }
-  }
-  cout << ans << endl;
+  cout<<ans<<endl;
+
 }
 int main()
 {
   ios_base::sync_with_stdio(false);
   cin.tie(NULL);
   int a = 1;
-  // cin >> a;
+  SieveOfEratosthenes(10000001);
+    rep(i,2,10000001){
+      if(prime[i] != 0)precomp[i]=1+precomp[i-1];
+      else precomp[i]=precomp[i-1];
+    }
+  cin >> a;
   while (a--)
   {
     sol();

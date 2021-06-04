@@ -8,6 +8,19 @@
 #include <bitset>
 #include <iterator>
 #include <list>
+#include <stack>
+#include <map>
+#include <set>
+#include <functional>
+#include <numeric>
+#include <utility>
+#include <limits>
+#include <time.h>
+#include <math.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <assert.h>
 using namespace std;
 #define rep(i, a, b) for (ll i = a; i < b; i++)
 #define res(i, a, b) for (ll i = a; i >= b; i--)
@@ -69,49 +82,37 @@ ll power(ll x, ll y)
 void sol()
 {
   ll n;
-  cin >> n;
-  vector<ll> v1(n);
-  ll sum = 0;
-  rep(i, 0, n)
-  {
-    cin >> v1[i];
+  cin>>n;
+  vector<ll> v1;
+  if(n==0){
+    cout<<1<<"\n"<<0<<endl;
+    return;
   }
-  priority_queue<ll, vector<ll>, greater<ll> > pq;
-  ll ans = 0;
-  for(auto i: v1)cout<<i<<endl;
-  rep(i, 0, n)
- {
-    if (v1[i] < 0)
-    {
-      if (sum + v1[i] >= 0)
-      {
-        ans++;
-        sum += v1[i];
-        pq.push(abs(v1[i]));
-      }
-      else if (!pq.empty())
-      {
-        ll temp = pq.top();
-        if (v1[i] <= temp)
-        {
-          continue;
-        }
-        else
-        {
-          pq.pop();
-          pq.push(abs(v1[i]));
-          sum += v1[i];
-          sum += temp;
-        }
-      }
-    }
-    else
-    {
-      ans++;
-      sum += v1[i];
-    }
+  while(n>0){
+    v1.push_back(n%10);
+    n=n/10;
   }
-  cout << ans << endl;
+  reverse(all(v1));
+  
+  cout<<*max_element(all(v1))<<endl;
+  ll flag=0;
+  while(flag==0){
+    // cout<<"hi"<<endl;
+    flag=1;
+    ll t2=0;
+    rep(i,0,v1.size()){
+      if(v1[i]>0){
+        cout<<"1";
+        v1[i]--;
+        t2=1;flag=0;
+      }
+      else if(t2==1){
+        cout<<"0";
+        }
+        // cout<<t2<<" "<<v1.size()<<"te"<<endl;
+    }
+    cout<<" ";
+  }
 }
 int main()
 {

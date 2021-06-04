@@ -8,6 +8,19 @@
 #include <bitset>
 #include <iterator>
 #include <list>
+#include <stack>
+#include <map>
+#include <set>
+#include <functional>
+#include <numeric>
+#include <utility>
+#include <limits>
+#include <time.h>
+#include <math.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <assert.h>
 using namespace std;
 #define rep(i, a, b) for (ll i = a; i < b; i++)
 #define res(i, a, b) for (ll i = a; i >= b; i--)
@@ -68,57 +81,66 @@ ll power(ll x, ll y)
 }
 void sol()
 {
-  ll n;
-  cin >> n;
-  vector<ll> v1(n);
-  ll sum = 0;
-  rep(i, 0, n)
-  {
-    cin >> v1[i];
-  }
-  priority_queue<ll, vector<ll>, greater<ll> > pq;
-  ll ans = 0;
-  for(auto i: v1)cout<<i<<endl;
-  rep(i, 0, n)
- {
-    if (v1[i] < 0)
-    {
-      if (sum + v1[i] >= 0)
-      {
-        ans++;
-        sum += v1[i];
-        pq.push(abs(v1[i]));
-      }
-      else if (!pq.empty())
-      {
-        ll temp = pq.top();
-        if (v1[i] <= temp)
-        {
-          continue;
-        }
-        else
-        {
-          pq.pop();
-          pq.push(abs(v1[i]));
-          sum += v1[i];
-          sum += temp;
-        }
-      }
-    }
-    else
-    {
-      ans++;
-      sum += v1[i];
+  ll n,m;
+  string str;
+  cin>>n>>m>>str;
+  ll currentcharge=0;
+  rep(i,1,n){
+    if(str[i]==str[i-1]){
+      currentcharge+=2;
+    }else{
+      currentcharge+=1;
     }
   }
-  cout << ans << endl;
+    rep(i,0,m){
+    ll t;
+    cin>>t;
+    if(n==1){cout<<0<<endl;continue;}
+    if(str[t-1]=='0'){
+      str[t-1]='1';
+    }
+    else{
+      str[t-1]='0';
+    }
+    if(t==1){
+      if(str[t-1]==str[t]){
+        currentcharge++;
+      }
+      else{
+        currentcharge--;
+      }
+    }
+    else if(t==n){
+      if(str[t-1]!=str[t-2]){
+        currentcharge--;
+      } 
+      else{
+        currentcharge++;
+      }
+    }
+    else{
+    if(str[t-1]!=str[t]){
+currentcharge--;
+    } 
+    else{
+      currentcharge++;
+    }
+    if(str[t-1]!=str[t-2]){
+      currentcharge--;
+    }    
+    else{
+      currentcharge++;
+    } 
+    }
+  cout<<currentcharge<<endl;
+  }
 }
 int main()
 {
   ios_base::sync_with_stdio(false);
   cin.tie(NULL);
   int a = 1;
-  // cin >> a;
+  cin >> a;
   while (a--)
   {
     sol();

@@ -8,6 +8,19 @@
 #include <bitset>
 #include <iterator>
 #include <list>
+#include <stack>
+#include <map>
+#include <set>
+#include <functional>
+#include <numeric>
+#include <utility>
+#include <limits>
+#include <time.h>
+#include <math.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <assert.h>
 using namespace std;
 #define rep(i, a, b) for (ll i = a; i < b; i++)
 #define res(i, a, b) for (ll i = a; i >= b; i--)
@@ -66,52 +79,35 @@ ll power(ll x, ll y)
   else
     return x * temp * temp;
 }
+
+ll solve(vector<pair<ll,ll>> v1,ll index,ll value,ll acc){
+  // cout<<index<<" " <<value<<" "<<acc<<endl;
+    if(index==v1.size())return value;
+    ll t1=0,t2=0,t3=0;
+    if(acc<v1[index].first)
+    {
+    t1=solve(v1,index+1,value+1,v1[index].first+v1[index].second);
+    }
+    if(acc<v1[index].first-v1[index].second || acc==-1)
+      t2=solve(v1,index+1,value+1,v1[index].first);
+    if(acc==-1){
+    t3=solve(v1,index+1,value,acc);
+    }
+    else
+    t3=solve(v1,index+1,value,max(acc,v1[index].first));
+    return max({t1,t2,t3});
+}
+
 void sol()
 {
   ll n;
-  cin >> n;
-  vector<ll> v1(n);
-  ll sum = 0;
-  rep(i, 0, n)
-  {
-    cin >> v1[i];
+  cin>>n;
+  vector<pair<ll,ll>> v1(n);
+  rep(i,0,n){
+    cin>>v1[i].first>>v1[i].second;
   }
-  priority_queue<ll, vector<ll>, greater<ll> > pq;
-  ll ans = 0;
-  for(auto i: v1)cout<<i<<endl;
-  rep(i, 0, n)
- {
-    if (v1[i] < 0)
-    {
-      if (sum + v1[i] >= 0)
-      {
-        ans++;
-        sum += v1[i];
-        pq.push(abs(v1[i]));
-      }
-      else if (!pq.empty())
-      {
-        ll temp = pq.top();
-        if (v1[i] <= temp)
-        {
-          continue;
-        }
-        else
-        {
-          pq.pop();
-          pq.push(abs(v1[i]));
-          sum += v1[i];
-          sum += temp;
-        }
-      }
-    }
-    else
-    {
-      ans++;
-      sum += v1[i];
-    }
-  }
-  cout << ans << endl;
+  cout<<solve(v1,0,0,-1)<<endl;
+
 }
 int main()
 {

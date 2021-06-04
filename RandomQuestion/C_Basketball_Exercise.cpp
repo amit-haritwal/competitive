@@ -8,6 +8,19 @@
 #include <bitset>
 #include <iterator>
 #include <list>
+#include <stack>
+#include <map>
+#include <set>
+#include <functional>
+#include <numeric>
+#include <utility>
+#include <limits>
+#include <time.h>
+#include <math.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <assert.h>
 using namespace std;
 #define rep(i, a, b) for (ll i = a; i < b; i++)
 #define res(i, a, b) for (ll i = a; i >= b; i--)
@@ -69,49 +82,19 @@ ll power(ll x, ll y)
 void sol()
 {
   ll n;
-  cin >> n;
-  vector<ll> v1(n);
-  ll sum = 0;
-  rep(i, 0, n)
-  {
-    cin >> v1[i];
+  cin>>n;
+  vector<pair<ll,ll>> v1(n);
+  rep(i,0,n){
+    cin>>v1[i].first;
   }
-  priority_queue<ll, vector<ll>, greater<ll> > pq;
-  ll ans = 0;
-  for(auto i: v1)cout<<i<<endl;
-  rep(i, 0, n)
- {
-    if (v1[i] < 0)
-    {
-      if (sum + v1[i] >= 0)
-      {
-        ans++;
-        sum += v1[i];
-        pq.push(abs(v1[i]));
-      }
-      else if (!pq.empty())
-      {
-        ll temp = pq.top();
-        if (v1[i] <= temp)
-        {
-          continue;
-        }
-        else
-        {
-          pq.pop();
-          pq.push(abs(v1[i]));
-          sum += v1[i];
-          sum += temp;
-        }
-      }
-    }
-    else
-    {
-      ans++;
-      sum += v1[i];
-    }
+  rep(i,0,n)cin>>v1[i].second;
+  vector<vector<ll>> dp(n+1,vector<ll> (3,0));
+  rep(i,0,n){
+    dp[i+1][0]=max({dp[i][0],dp[i][1],dp[i][2]});
+    dp[i+1][1]=max(dp[i][0]+v1[i].first,dp[i][2]+v1[i].first);
+    dp[i+1][2]=max(dp[i][0]+v1[i].second,dp[i][1]+v1[i].second);
   }
-  cout << ans << endl;
+  cout<<*max_element(dp[n].begin(),dp[n].end())<<endl;
 }
 int main()
 {

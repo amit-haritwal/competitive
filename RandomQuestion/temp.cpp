@@ -8,6 +8,19 @@
 #include <bitset>
 #include <iterator>
 #include <list>
+#include <stack>
+#include <map>
+#include <set>
+#include <functional>
+#include <numeric>
+#include <utility>
+#include <limits>
+#include <time.h>
+#include <math.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <assert.h>
 using namespace std;
 #define rep(i, a, b) for (ll i = a; i < b; i++)
 #define res(i, a, b) for (ll i = a; i >= b; i--)
@@ -68,50 +81,37 @@ ll power(ll x, ll y)
 }
 void sol()
 {
-  ll n;
-  cin >> n;
-  vector<ll> v1(n);
-  ll sum = 0;
-  rep(i, 0, n)
-  {
-    cin >> v1[i];
-  }
-  priority_queue<ll, vector<ll>, greater<ll> > pq;
-  ll ans = 0;
-  for(auto i: v1)cout<<i<<endl;
-  rep(i, 0, n)
- {
-    if (v1[i] < 0)
-    {
-      if (sum + v1[i] >= 0)
-      {
-        ans++;
-        sum += v1[i];
-        pq.push(abs(v1[i]));
-      }
-      else if (!pq.empty())
-      {
-        ll temp = pq.top();
-        if (v1[i] <= temp)
+  string str;
+  cin>>str;
+  ll ans=0;
+  rep(i,0,str.size()){
+    if(i==str.size()-1)break;
+    if(str[i]=='B' && str[i+1]=='A' ){
+      rep(j,i+2,str.size()){
+        if(j==str.size()-1)break;
+        if (str[j] == 'A' && str[j + 1] == 'B')
         {
-          continue;
+          cout<<"YES"<<endl;
+        return;
         }
-        else
+      }
+      }
+    
+    if( str[i]=='A' && str[i+1]=='B'){
+      rep(j, i + 2, str.size())
+      {
+        if (j == str.size() - 1)
+          break;
+        if (str[j] == 'B' && str[j + 1] == 'A')
         {
-          pq.pop();
-          pq.push(abs(v1[i]));
-          sum += v1[i];
-          sum += temp;
+          cout << "YES" << endl;
+          return;
         }
       }
     }
-    else
-    {
-      ans++;
-      sum += v1[i];
-    }
+  
   }
-  cout << ans << endl;
+  cout<<"NO"<<endl;
 }
 int main()
 {
