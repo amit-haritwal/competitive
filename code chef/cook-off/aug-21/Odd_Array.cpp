@@ -50,7 +50,6 @@ bool compPairS(pair<ll, ll> v1, pair<ll, ll> v2)
 //  {
 //    if (primes[i] != 0)
 //    {
-//
 //      for (ll j = i * i; j < n; j = j + i)
 //      {
 //        primes[j] = 0;
