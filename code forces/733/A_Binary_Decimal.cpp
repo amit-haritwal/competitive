@@ -83,22 +83,13 @@ void sol()
 {
   ll n;
   cin>>n;
-  vector<ll> v1(n);
-  rep(i,0,n){
-    cin>>v1[i];
+  ll ans=0;
+  while(n>0){
+    ans=max(ans,n%10);
+    n=n/10;
   }
-
-  ll m;
-  cin>>m;
-  vector<ll> ans(n+1,1);
-  rep(i, 0, n){
-    
-  }
-  rep(i,0,m){
-    ll l,r;
-    cin>>l>>r;
-    cout<<ans[l]-ans[r];
-  }
+  if(ans==0)ans++;
+  cout<<ans<<endl;
 }
 int main()
 {

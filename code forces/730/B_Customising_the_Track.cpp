@@ -84,21 +84,18 @@ void sol()
   ll n;
   cin>>n;
   vector<ll> v1(n);
+  ll sum=0;
   rep(i,0,n){
     cin>>v1[i];
+    sum+=v1[i];
+  }
+  if(sum%n==0){
+    cout<<0<<endl;
+  }
+  else{
+    cout<< sum%n * (n-sum%n) <<endl;
   }
 
-  ll m;
-  cin>>m;
-  vector<ll> ans(n+1,1);
-  rep(i, 0, n){
-    
-  }
-  rep(i,0,m){
-    ll l,r;
-    cin>>l>>r;
-    cout<<ans[l]-ans[r];
-  }
 }
 int main()
 {

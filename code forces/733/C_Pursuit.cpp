@@ -35,9 +35,9 @@ void pop_front(std::vector<T> &vec)
   assert(!vec.empty());
   vec.erase(vec.begin());
 }
-bool compPairF(pair<ll, ll> v1, pair<ll, ll> v2)
+bool compPairF(ll v1, ll v2)
 {
-  return v1.first < v2.first;
+  return v1 > v2;
 }
 bool compPairS(pair<ll, ll> v1, pair<ll, ll> v2)
 {
@@ -83,22 +83,52 @@ void sol()
 {
   ll n;
   cin>>n;
-  vector<ll> v1(n);
-  rep(i,0,n){
-    cin>>v1[i];
+  vector<ll> v1(n),v2(n);
+  rep(i,0,n)cin>>v1[i];
+  rep(i,0,n)cin>>v2[i];
+  sort(v1.begin(), v1.end());
+  sort(v2.begin(), v2.end());
+  ll sum1=0,sum2=0;
+  for(auto i:v1){
+    sum1+=i;
   }
-
-  ll m;
-  cin>>m;
-  vector<ll> ans(n+1,1);
-  rep(i, 0, n){
-    
+  for(auto i:v2){
+    sum2+=i;
   }
-  rep(i,0,m){
-    ll l,r;
-    cin>>l>>r;
-    cout<<ans[l]-ans[r];
+  ll toremove=n/4;
+  ll i=0;
+  while(toremove>i){
+    sum1=sum1-v1[i];
+    sum2=sum2-v2[i];
+    i++;
   }
+  ll prevtor=toremove;
+  ll ans=0,k=n,tt=toremove;
+  while(sum1<sum2){
+      sum1+=100;
+      k++;
+      ans++;
+      if(toremove!=0){
+        toremove--;
+          sum2+=v2[toremove];
+          
+        }
+      ll tor=k/4;
+      if(tor!=prevtor){
+        if(tt==n){
+          sum1-=100;
+        }
+        else{
+          sum1-=v1[tt];
+          tt++;
+        }
+      }
+          prevtor=tor;
+    }
+    // cout<<sum1<< " "<<sum2<<endl;
+  cout<<ans<<endl;
+  
+  
 }
 int main()
 {

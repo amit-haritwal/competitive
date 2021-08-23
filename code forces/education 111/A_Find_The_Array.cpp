@@ -83,22 +83,10 @@ void sol()
 {
   ll n;
   cin>>n;
-  vector<ll> v1(n);
-  rep(i,0,n){
-    cin>>v1[i];
-  }
-
-  ll m;
-  cin>>m;
-  vector<ll> ans(n+1,1);
-  rep(i, 0, n){
-    
-  }
-  rep(i,0,m){
-    ll l,r;
-    cin>>l>>r;
-    cout<<ans[l]-ans[r];
-  }
+  int t=sqrt(n);
+  if(n==t*t){cout<<t<<endl;return;}
+    cout<<int(sqrt(n)+1)<<endl;
+  
 }
 int main()
 {

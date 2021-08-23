@@ -82,23 +82,12 @@ ll power(ll x, ll y)
 void sol()
 {
   ll n;
-  cin>>n;
-  vector<ll> v1(n);
-  rep(i,0,n){
-    cin>>v1[i];
-  }
+  cin >> n;
+  ll ans = n / 10;
 
-  ll m;
-  cin>>m;
-  vector<ll> ans(n+1,1);
-  rep(i, 0, n){
-    
-  }
-  rep(i,0,m){
-    ll l,r;
-    cin>>l>>r;
-    cout<<ans[l]-ans[r];
-  }
+  ll t = n % 10 == 9 ? 1 : 0;
+  ans += t;
+  cout << ans << endl;
 }
 int main()
 {

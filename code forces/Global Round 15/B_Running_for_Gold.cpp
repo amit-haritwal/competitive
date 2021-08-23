@@ -82,23 +82,80 @@ ll power(ll x, ll y)
 void sol()
 {
   ll n;
-  cin>>n;
-  vector<ll> v1(n);
-  rep(i,0,n){
-    cin>>v1[i];
+  cin >> n;
+  vector<vector<ll>> v1;
+  rep(i, 0, n)
+  {
+    ll a, b, c, d, e;
+    cin >> a >> b >> c >> d >> e;
+
+    v1.push_back({a, b, c, d, e});
+  }
+  ll ans = -1;
+  ll preans = 0;
+  rep(i, 1, n)
+  {
+
+    ll temp = 0;
+    if (v1[i][0] < v1[preans][0])
+    {
+      temp++;
+    }
+    if (v1[i][1] < v1[preans][1])
+    {
+      temp++;
+    }
+    if (v1[i][2] < v1[preans][2])
+    {
+      temp++;
+    }
+    if (v1[i][3] < v1[preans][3])
+    {
+      temp++;
+    }
+    if (v1[i][4] < v1[preans][4])
+    {
+      temp++;
+    }
+    if (temp >= 3)
+    {
+      preans = i;
+    }
+  }
+  ans = preans;
+  rep(i, 0, n)
+  {
+
+    ll temp = 0;
+    if (v1[i][0] < v1[preans][0])
+    {
+      temp++;
+    }
+    if (v1[i][1] < v1[preans][1])
+    {
+      temp++;
+    }
+    if (v1[i][2] < v1[preans][2])
+    {
+      temp++;
+    }
+    if (v1[i][3] < v1[preans][3])
+    {
+      temp++;
+    }
+    if (v1[i][4] < v1[preans][4])
+    {
+      temp++;
+    }
+    if (temp >= 3)
+    {
+      cout << -1 << endl;
+      return;
+    }
   }
 
-  ll m;
-  cin>>m;
-  vector<ll> ans(n+1,1);
-  rep(i, 0, n){
-    
-  }
-  rep(i,0,m){
-    ll l,r;
-    cin>>l>>r;
-    cout<<ans[l]-ans[r];
-  }
+  cout << ans + 1 << endl;
+  // cout << endl;
 }
 int main()
 {

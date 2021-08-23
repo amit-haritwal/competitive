@@ -79,26 +79,74 @@ ll power(ll x, ll y)
   else
     return x * temp * temp;
 }
-void sol()
+ll binarySearch(vector<ll> arr, ll l, ll r, ll x)
 {
-  ll n;
-  cin>>n;
-  vector<ll> v1(n);
-  rep(i,0,n){
-    cin>>v1[i];
+  while (l <= r)
+  {
+    ll m = l + (r - l) / 2;
+
+    // Check if x is present at mid
+    if (arr[m] == x)
+      return m;
+
+    // If x greater, ignore left half
+    if (arr[m] < x)
+      l = m + 1;
+
+    // If x is smaller, ignore right half
+    else
+      r = m - 1;
   }
 
-  ll m;
-  cin>>m;
-  vector<ll> ans(n+1,1);
-  rep(i, 0, n){
-    
+  // if we reach here, then element was
+  // not present
+  return -1;
+}
+
+void sol()
+{
+  ll n, k;
+  cin >> n >> k;
+  vector<ll> v1(n), v2;
+  rep(i, 0, n)
+  {
+    cin >> v1[i];
   }
-  rep(i,0,m){
-    ll l,r;
-    cin>>l>>r;
-    cout<<ans[l]-ans[r];
+  v2 = v1;
+  sort(v2.begin(), v2.end());
+  ll j = 0;
+  map<ll, ll> mp;
+  for (auto i : v2)
+  {
+    mp[i] = j;
+    j++;
   }
+  ll i = 0;
+  while (true)
+  {
+    if (i == n)
+    {
+      break;
+    }
+    if (k == 0)
+    {
+      cout << "No" << endl;
+      return;
+    }
+    ll t = mp[v1[i]];
+    // cout << i << " " << t << endl;
+    rep(j, i, n)
+    {
+      if (v1[j] != v2[t])
+      {
+        k--;
+        break;
+      }
+      i++;
+      t++;
+    }
+  }
+  cout << "Yes" << endl;
 }
 int main()
 {

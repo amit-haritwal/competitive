@@ -83,21 +83,18 @@ void sol()
 {
   ll n;
   cin>>n;
-  vector<ll> v1(n);
-  rep(i,0,n){
-    cin>>v1[i];
+  ll odd=0;
+  rep(i,0,2*n){
+    ll temp=0;cin>>temp;
+    if(temp%2!=0){
+      odd++;
+    }
   }
-
-  ll m;
-  cin>>m;
-  vector<ll> ans(n+1,1);
-  rep(i, 0, n){
-    
+  if(odd!=n){
+    cout<<"No"<<endl;
   }
-  rep(i,0,m){
-    ll l,r;
-    cin>>l>>r;
-    cout<<ans[l]-ans[r];
+  else{
+    cout<<"Yes"<<endl;
   }
 }
 int main()
