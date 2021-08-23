@@ -81,24 +81,22 @@ ll power(ll x, ll y)
 }
 void sol()
 {
-  ll n;
-  cin>>n;
-  vector<ll> v1(n);
-  rep(i,0,n){
-    cin>>v1[i];
+  ll n,a,b;
+  cin>>n>>a>>b;
+  if(a==1 ||b==1 || n==1){
+    cout<<"Yes"<<endl;
+    return;
   }
-
-  ll m;
-  cin>>m;
-  vector<ll> ans(n+1,1);
-  rep(i, 0, n){
-    
+  while(n!=1 && n>0){
+    if(n%a==0){
+      n=n/a;
+    }
+    else{
+      n=n-b;
+    }
   }
-  rep(i,0,m){
-    ll l,r;
-    cin>>l>>r;
-    cout<<ans[l]-ans[r];
-  }
+  if(n==1)cout<<"Yes"<<endl;
+  else cout<<"No"<<endl;
 }
 int main()
 {

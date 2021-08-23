@@ -7,6 +7,7 @@
 #include <deque>
 #include <bitset>
 #include <iterator>
+#include <iomanip>
 #include <list>
 #include <stack>
 #include <map>
@@ -82,23 +83,19 @@ ll power(ll x, ll y)
 void sol()
 {
   ll n;
-  cin>>n;
+  cin >> n;
   vector<ll> v1(n);
-  rep(i,0,n){
-    cin>>v1[i];
+  ll sum = 0;
+  rep(i, 0, n)
+  {
+    cin >> v1[i];
+    sum += v1[i];
   }
+  ll max1 = *max_element(v1.begin(), v1.end());
+  double ans = ((sum - max1 * 1.0) / (n - 1)) + max1;
 
-  ll m;
-  cin>>m;
-  vector<ll> ans(n+1,1);
-  rep(i, 0, n){
-    
-  }
-  rep(i,0,m){
-    ll l,r;
-    cin>>l>>r;
-    cout<<ans[l]-ans[r];
-  }
+  cout << std::setprecision(11)
+       << (((sum - max1 * 1.0)) / (n - 1)) + max1 << endl;
 }
 int main()
 {

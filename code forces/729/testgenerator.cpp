@@ -81,24 +81,9 @@ ll power(ll x, ll y)
 }
 void sol()
 {
-  ll n;
-  cin>>n;
-  vector<ll> v1(n);
-  rep(i,0,n){
-    cin>>v1[i];
-  }
+  ll n=rand()% 100000000;
+  cout<<n+1<<" "<<rand()% n +1<<" "<<rand()% n+1 <<endl;
 
-  ll m;
-  cin>>m;
-  vector<ll> ans(n+1,1);
-  rep(i, 0, n){
-    
-  }
-  rep(i,0,m){
-    ll l,r;
-    cin>>l>>r;
-    cout<<ans[l]-ans[r];
-  }
 }
 int main()
 {

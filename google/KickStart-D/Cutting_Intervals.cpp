@@ -81,24 +81,38 @@ ll power(ll x, ll y)
 }
 void sol()
 {
-  ll n;
-  cin>>n;
-  vector<ll> v1(n);
+  ll n,c;
+  cin>>n>>c;
+  ll ans=0;
+  ll split2=0;
+  priority_queue<ll> v1;
   rep(i,0,n){
-    cin>>v1[i];
-  }
-
-  ll m;
-  cin>>m;
-  vector<ll> ans(n+1,1);
-  rep(i, 0, n){
-    
-  }
-  rep(i,0,m){
     ll l,r;
     cin>>l>>r;
-    cout<<ans[l]-ans[r];
+    if(l-r!=0)
+      v1.push(r-l-1);
+    
   }
+  ll final=n;
+  while(c>0 && !v1.empty()){
+    ll t=v1.top();
+    v1.pop();
+    if(t==0){
+      t++;
+    }
+    if(c>=t){
+      c-=t;
+      final+=t+1;
+    }
+    else{
+      final+=c;
+
+      c=-1;
+    }
+    cout<<t<<" "<<final<<" "<<c<<endl;
+    
+  }
+  cout<<final<<endl;
 }
 int main()
 {
@@ -106,8 +120,11 @@ int main()
   cin.tie(NULL);
   int a = 1;
   cin >> a;
+  int i = 1;
   while (a--)
   {
+    cout << "Case #" << i << ':' << ' ';
     sol();
+    i++;
   }
 }

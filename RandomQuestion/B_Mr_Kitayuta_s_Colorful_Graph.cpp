@@ -79,25 +79,64 @@ ll power(ll x, ll y)
   else
     return x * temp * temp;
 }
+ll ans = 0;
+map<ll, ll> mp;
+void bfs(ll current, ll dest, ll color, vector<vector<pair<ll, ll>>> v1, vector<ll> visited)
+{
+  if (current == dest)
+  {
+    ans++;
+    mp[color]++;
+    return;
+  }
+  visited[current] = 1;
+  for (auto i : v1[current])
+  {
+    if (!visited[i.first])
+    {
+      if (color == -1)
+      {
+        visited[i.first] = 1;
+        bfs(i.first, dest, i.second, v1, visited);
+        visited[i.first] = 0;
+      }
+      else
+      {
+        if (!mp[color] && i.second == color)
+        {
+          visited[i.first] = 1;
+          bfs(i.first, dest, i.second, v1, visited);
+          visited[i.first] = 0;
+        }
+      }
+    }
+  }
+  visited[current] = 0;
+}
 void sol()
 {
-  ll n;
-  cin>>n;
-  vector<ll> v1(n);
-  rep(i,0,n){
-    cin>>v1[i];
-  }
+  ll n, m;
+  cin >> n >> m;
 
-  ll m;
-  cin>>m;
-  vector<ll> ans(n+1,1);
-  rep(i, 0, n){
-    
+  vector<vector<pair<ll, ll>>> v1(n + 10);
+  rep(i, 0, m)
+  {
+    ll l, r, c;
+    cin >> l >> r >> c;
+    v1[l].push_back({r, c});
+    v1[r].push_back({l, c});
   }
-  rep(i,0,m){
-    ll l,r;
-    cin>>l>>r;
-    cout<<ans[l]-ans[r];
+  ll t;
+  cin >> t;
+  rep(i, 0, t)
+  {
+    ll l, r;
+    ans = 0;
+    mp.clear();
+    cin >> l >> r;
+    vector<ll> visited(n + 10, 0);
+    bfs(l, r, -1, v1, visited);
+    cout << ans << endl;
   }
 }
 int main()
@@ -105,7 +144,7 @@ int main()
   ios_base::sync_with_stdio(false);
   cin.tie(NULL);
   int a = 1;
-  cin >> a;
+  // cin >> a;
   while (a--)
   {
     sol();

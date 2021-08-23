@@ -81,24 +81,23 @@ ll power(ll x, ll y)
 }
 void sol()
 {
-  ll n;
-  cin>>n;
+  ll n,k;
+  cin>>n>>k;
   vector<ll> v1(n);
+  rep(i,0,n)v1[i]=i;
+  ll temp=v1[0];
   rep(i,0,n){
-    cin>>v1[i];
+    cout<<(v1[i]^temp)<<endl;
+    cout.flush();
+    
+    ll t;
+    cin>>(t);
+    if(t==1){
+      return;
+    }
+    temp=(v1[i]|temp);
   }
 
-  ll m;
-  cin>>m;
-  vector<ll> ans(n+1,1);
-  rep(i, 0, n){
-    
-  }
-  rep(i,0,m){
-    ll l,r;
-    cin>>l>>r;
-    cout<<ans[l]-ans[r];
-  }
 }
 int main()
 {

@@ -81,24 +81,63 @@ ll power(ll x, ll y)
 }
 void sol()
 {
+  string str;
   ll n;
-  cin>>n;
-  vector<ll> v1(n);
-  rep(i,0,n){
-    cin>>v1[i];
-  }
+  cin >> n >> str;
+  if (str[0] == '?')
+  {
+    int i = 0;
+    while (str[i] == '?')
+    {
+      i++;
+    }
+    if (i == n)
+    {
+      rep(i, 0, n)
+      {
+        if (i % 2 == 0)
+        {
+          str[i] = 'R';
+        }
+        else
+        {
+          str[i] = 'B';
+        }
+      }
+    }
+    else
+    {
 
-  ll m;
-  cin>>m;
-  vector<ll> ans(n+1,1);
-  rep(i, 0, n){
-    
+      i--;
+      for (int j = i; j >= 0; j--)
+      {
+        if (str[j + 1] == 'R')
+        {
+          str[j] = 'B';
+        }
+        else
+        {
+          str[j] = 'R';
+        }
+      }
+    }
   }
-  rep(i,0,m){
-    ll l,r;
-    cin>>l>>r;
-    cout<<ans[l]-ans[r];
+  ll i = 0;
+  rep(i, 0, n)
+  {
+    if (str[i] == '?')
+    {
+      if (str[i - 1] == 'R')
+      {
+        str[i] = 'B';
+      }
+      else
+      {
+        str[i] = 'R';
+      }
+    }
   }
+  cout << str << endl;
 }
 int main()
 {

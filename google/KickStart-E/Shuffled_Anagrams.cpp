@@ -81,23 +81,37 @@ ll power(ll x, ll y)
 }
 void sol()
 {
-  ll n;
-  cin>>n;
-  vector<ll> v1(n);
-  rep(i,0,n){
-    cin>>v1[i];
+  string str;
+  cin >> str;
+  map<char, ll> mp;
+  for (auto i : str)
+  {
+    mp[i]++;
   }
-
-  ll m;
-  cin>>m;
-  vector<ll> ans(n+1,1);
-  rep(i, 0, n){
-    
+  for (auto i : mp)
+  {
+    if (i.second > str.size() / 2)
+    {
+      cout << "IMPOSSIBLE" << endl;
+    }
   }
-  rep(i,0,m){
-    ll l,r;
-    cin>>l>>r;
-    cout<<ans[l]-ans[r];
+  if (str.size() % 2 == 0)
+  {
+    for (int i = 0; i < str.size(); i += 2)
+    {
+      char temp = str[i];
+      str[i] = str[i + 1];
+      str[i + 1] = temp;
+    }
+    for (int i = 0; i < str.size(); i += 2)
+    {
+      char temp = str[i];
+      str[i] = str[i + 1];
+      str[i + 1] = temp;
+    }
+  }
+  else
+  {
   }
 }
 int main()
@@ -106,8 +120,11 @@ int main()
   cin.tie(NULL);
   int a = 1;
   cin >> a;
+  int i = 1;
   while (a--)
   {
+    cout << "Case #" << i << ':' << ' ';
     sol();
+    i++;
   }
 }

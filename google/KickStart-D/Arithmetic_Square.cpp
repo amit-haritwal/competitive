@@ -79,26 +79,38 @@ ll power(ll x, ll y)
   else
     return x * temp * temp;
 }
+bool isAp(ll a,ll b,ll c){
+  // cout<<a << " " <<b<<" " <<c<<endl;
+  if(a-b==b-c)return true;
+  return false;
+}
 void sol()
-{
-  ll n;
-  cin>>n;
-  vector<ll> v1(n);
-  rep(i,0,n){
+{ 
+  vector<ll> v1(8);
+  rep(i,0,8){
     cin>>v1[i];
   }
-
-  ll m;
-  cin>>m;
-  vector<ll> ans(n+1,1);
-  rep(i, 0, n){
-    
+  map<double,ll> mp;
+  mp[(v1[0]+v1[7]+0.0)/2]++;
+  mp[(v1[1]+v1[6]+0.0)/2]++;
+  mp[(v1[2]+v1[5]+0.0)/2]++;
+  mp[(v1[3]+v1[4]+0.0)/2]++;
+  ll ans=-INF;
+  ll val=0;
+  for(auto i: mp){
+    if(i.second>val){ans=i.first;val=i.second;}
+    // cout<<i.first<<" "<<i.second<<endl;
   }
-  rep(i,0,m){
-    ll l,r;
-    cin>>l>>r;
-    cout<<ans[l]-ans[r];
-  }
+  ll finalans=0;
+    finalans+=isAp(v1[0],v1[1],v1[2]);
+    finalans+=isAp(v1[3],ans,v1[4]);
+    finalans+=isAp(v1[5],v1[6],v1[7]);
+    finalans+=isAp(v1[0],v1[3],v1[5]);
+    finalans+=isAp(v1[1],ans,v1[6]);
+    finalans+=isAp(v1[2],v1[4],v1[7]);
+    finalans+=isAp(v1[0],ans,v1[7]);
+    finalans+=isAp(v1[2],ans,v1[5]);
+  cout<<finalans<< endl;
 }
 int main()
 {
@@ -106,8 +118,11 @@ int main()
   cin.tie(NULL);
   int a = 1;
   cin >> a;
+  int i = 1;
   while (a--)
   {
+    cout << "Case #" << i << ':' << ' ';
     sol();
+    i++;
   }
 }

@@ -81,23 +81,99 @@ ll power(ll x, ll y)
 }
 void sol()
 {
-  ll n;
-  cin>>n;
-  vector<ll> v1(n);
-  rep(i,0,n){
-    cin>>v1[i];
-  }
+  ll n,m1,m2;
+  cin>>n>>m1>>m2;
+  map<ll,vector<ll>> mp;
 
-  ll m;
-  cin>>m;
-  vector<ll> ans(n+1,1);
-  rep(i, 0, n){
-    
-  }
-  rep(i,0,m){
+  rep(i,0,m1){
     ll l,r;
     cin>>l>>r;
-    cout<<ans[l]-ans[r];
+    if(mp[l].size()){
+      mp[l].push_back(r);
+      vector<ll> temp = mp[l];
+
+      for(auto j:mp[l]){
+        mp[j]=temp;
+      }
+      
+    }
+    else{
+      mp[l].push_back(r);
+      mp[l].push_back(l);
+    }
+    if (mp[r].size())
+    {
+      mp[r].push_back(l);
+      vector<ll> temp = mp[r];
+
+      for (auto j : mp[r])
+      {
+
+        mp[j] = temp;
+      }
+    }
+    else{
+      mp[r].push_back(r);
+      mp[r].push_back(l);
+    }
+    
+  }
+  map<ll, vector<ll>> mp1;
+
+  rep(i, 0, m2)
+  {
+    ll l, r;
+    cin >> l >> r;
+    if (mp1[l].size())
+    {
+      mp1[l].push_back(r);
+      vector<ll> temp = mp1[l];
+
+      for (auto j : mp1[l])
+      {
+        mp1[j] = temp;
+      }
+    }
+    else
+    {
+      mp1[l].push_back(r);
+      mp1[l].push_back(l);
+    }
+    if (mp1[r].size())
+    {
+      mp1[r].push_back(l);
+      vector<ll> temp = mp1[r];
+
+      for (auto j : mp1[r])
+      {
+
+        mp1[j] = temp;
+      }
+    }
+    else
+    {
+      mp1[r].push_back(r);
+      mp1[r].push_back(l);
+    }
+  }
+  vector<vector<ll>>v1;
+  for(auto i : mp1){
+    ll flag=0;
+    for(auto j:v1){
+      if(i.second==j){
+        flag = 1;
+        break;
+      }
+    }
+    if(!flag){
+      v1.push_back(i.second);
+    }
+  }
+
+  rep(i,0,v1.size()){
+    rep(j,i,v1.size()){
+      
+    }
   }
 }
 int main()
@@ -105,7 +181,7 @@ int main()
   ios_base::sync_with_stdio(false);
   cin.tie(NULL);
   int a = 1;
-  cin >> a;
+  // cin >> a;
   while (a--)
   {
     sol();

@@ -83,22 +83,21 @@ void sol()
 {
   ll n;
   cin>>n;
-  vector<ll> v1(n);
-  rep(i,0,n){
-    cin>>v1[i];
-  }
+  map<string,ll> mp;
+  rep(i,0,n*3){
+    string t;
+    ll q;
+    cin>>t>>q;
+    mp[t]+=q;
 
-  ll m;
-  cin>>m;
-  vector<ll> ans(n+1,1);
-  rep(i, 0, n){
-    
   }
-  rep(i,0,m){
-    ll l,r;
-    cin>>l>>r;
-    cout<<ans[l]-ans[r];
+  vector<ll> v1;
+  for(auto i:mp){
+    v1.push_back(i.second);
   }
+  sort(v1.begin(), v1.end());
+  for(auto i : v1)cout<<i<<" ";
+  cout<<endl;
 }
 int main()
 {

@@ -81,23 +81,70 @@ ll power(ll x, ll y)
 }
 void sol()
 {
-  ll n;
-  cin>>n;
-  vector<ll> v1(n);
-  rep(i,0,n){
-    cin>>v1[i];
+  ll n,a,b;
+  string str;
+  cin>>n>>a>>b>>str;
+  if((a<0 || b<0) && a>b ){
+    ll zeroc=0,onec=0;
+    rep(i,0,n){
+      if(str[i]=='0')zeroc++;
+      else onec++;
+    }
+    if(zeroc>=onec){
+      ll i=0; ll j=0;
+      ll ans=0;
+      while(i<=n && j<=n){
+        if(j==n){
+          if(i!=n){
+            ans+=a*(j-i)+b;
+          }
+          else{
+            break;
+          }
+        }
+        if(str[j]=='1'){
+          j++;
+        }
+        else{
+          if(i!=j){
+            ans+=a*(j-i)+b;
+          }
+          i=++j;
+        }
+      }
+      ans+=onec*a+b;
+      cout<<ans<<endl;
+      return;
+    }
+    else{
+      ll i=0; ll j=0;
+      ll ans=0;
+      while(i<=n && j<=n){
+        if(j==n){
+          if(i!=n){
+            ans+=a*(j-i)+b;
+          }
+          else{
+            break;
+          }
+        }
+        if(str[j]=='0'){
+          j++;
+        }
+        else{
+          if(i!=j){
+            ans+=a*(j-i)+b;
+          }
+          i=++j;
+        }
+      }
+      ans+=onec*a+b;
+      cout<<ans<<endl;
+      return;
+    }
   }
-
-  ll m;
-  cin>>m;
-  vector<ll> ans(n+1,1);
-  rep(i, 0, n){
-    
-  }
-  rep(i,0,m){
-    ll l,r;
-    cin>>l>>r;
-    cout<<ans[l]-ans[r];
+  else{
+    cout<<(a+b)*n<<endl;
   }
 }
 int main()
